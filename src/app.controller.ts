@@ -1,12 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, UseInterceptors } from '@nestjs/common';
+import { TransformInterceptor } from './utils/transform.interceptor';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @UseInterceptors(TransformInterceptor)
+  getHello() {
+    return { message: 'Welcome to Events planner!', result: {} };
   }
 }
