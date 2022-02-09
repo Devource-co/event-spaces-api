@@ -1,0 +1,45 @@
+version: "3"
+services:
+  app:
+    container_name: findyspace
+    restart: always
+    env_file: .env
+    stdin_open: true
+    tty: true
+    environment:
+      - NODE_ENV=$NODE_ENV
+    build: .
+    ports:
+      - '9456:8090'
+    networks:
+      - findyspace
+  postgres:
+    container_name: db
+    image: postgres:latest
+    # ports:
+    # - "5432:5432"
+    volumes:
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+      - /data/postgres:/data/postgres
+    env_file:
+      - docker.env
+    networks:
+      - findyspace
+ 
+  pgadmin:
+    links:
+      - postgres:postgres
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - "8080:80"
+    volumes:
+      - /data/pgadmin:/root/.pgadmin
+    env_file:
+      - docker.env
+    networks:
+      - findyspace
+ 
+networks:
+  findyspace:
+    driver: bridge

@@ -3,6 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppController } from './app.controller';
+import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import configuration from './config';
 
 @Module({
@@ -12,21 +15,9 @@ import configuration from './config';
       isGlobal: true,
       cache: true,
     }),
-    TypeOrmModule.forRootAsync({
-      useFactory: async (config: ConfigService) => ({
-        type: 'postgres',
-        logging: true,
-        logger: 'file',
-        url: config.get<string>('databaseUrl'),
-        entities: ['dist/**/*.entity.js'],
-        migrations: ['dist/src/db/migrations/*js'],
-        cli: {
-          migrationsDir: 'src/db/migrations',
-        },
-        synchronize: config.get<string>('env') !== 'production',
-      }),
-      inject: [ConfigService],
-    }),
+    DatabaseModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [],
