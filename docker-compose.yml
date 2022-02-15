@@ -9,18 +9,22 @@ services:
     environment:
       - NODE_ENV=$NODE_ENV
     build: .
+    volumes:
+      - .:/usr/src/app/
+      - /usr/src/app/node_modules
+    links:
+      - db
     ports:
-      - '9456:8090'
+      - '3090:3090'
     networks:
       - findyspace
-  postgres:
+  db:
     container_name: db
     image: postgres:latest
-    # ports:
-    # - "5432:5432"
+    ports:
+    - "5432:5432"
     volumes:
-      - ./pg-init-scripts:/docker-entrypoint-initdb.d
-      - /data/postgres:/data/postgres
+      - ./pgdata:/var/lib/postgresql/data
     env_file:
       - docker.env
     networks:
@@ -28,7 +32,7 @@ services:
  
   pgadmin:
     links:
-      - postgres:postgres
+      - db
     container_name: pgadmin
     image: dpage/pgadmin4
     ports:

@@ -1,4 +1,4 @@
-import { VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -9,6 +9,7 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
+  app.useGlobalPipes(new ValidationPipe());
   const configService = app.get<ConfigService>(ConfigService);
 
   const config = new DocumentBuilder()
@@ -17,9 +18,11 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('events')
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    deepScanRoutes: true,
+  });
   SwaggerModule.setup('api', app, document);
-
   await app.listen(configService.get('PORT'));
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
