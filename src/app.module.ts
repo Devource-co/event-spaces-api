@@ -1,9 +1,12 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
+import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 import configuration from './config';
+import { AppLoggerMiddleware } from './middlewares/requestlogger.middleware';
 
 @Module({
   imports: [
@@ -12,23 +15,15 @@ import configuration from './config';
       isGlobal: true,
       cache: true,
     }),
-    TypeOrmModule.forRootAsync({
-      useFactory: async (config: ConfigService) => ({
-        type: 'postgres',
-        logging: true,
-        logger: 'file',
-        url: config.get<string>('databaseUrl'),
-        entities: ['dist/**/*.entity.js'],
-        migrations: ['dist/src/db/migrations/*js'],
-        cli: {
-          migrationsDir: 'src/db/migrations',
-        },
-        synchronize: config.get<string>('env') !== 'production',
-      }),
-      inject: [ConfigService],
-    }),
+    DatabaseModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(AppLoggerMiddleware).forRoutes('*');
+  }
+}
