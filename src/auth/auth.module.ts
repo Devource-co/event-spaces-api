@@ -1,16 +1,15 @@
 import { Module, OnModuleInit } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { AuthModuleOptions, PassportModule } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './jwt.strategy';
 import { HttpModule, HttpService } from '@nestjs/axios';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
   imports: [
-    UsersModule,
     PassportModule,
     JwtModule.registerAsync({
       useFactory: async (config: ConfigService) => ({
@@ -21,7 +20,8 @@ import { HttpModule, HttpService } from '@nestjs/axios';
     HttpModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, AuthModuleOptions],
+  providers: [AuthService, JwtStrategy, UsersService, AuthModuleOptions],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule implements OnModuleInit {
   constructor(private httpService: HttpService) {}
