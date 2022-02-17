@@ -4,8 +4,8 @@ import { TransformInterceptor } from './utils/transform.interceptor';
 @Controller()
 export class AppController {
   @Get()
-  @UseInterceptors(TransformInterceptor)
+  // @UseInterceptors(TransformInterceptor)
   getHello() {
-    return { message: 'Welcome to Events planner!', result: {} };
+    return 'hello';
   }
 }

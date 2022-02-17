@@ -8,6 +8,7 @@ import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { SocialLoginDto } from './dto/socials-login.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +16,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private httpService: HttpService,
+    private readonly configService: ConfigService,
   ) {}
 
   private async _signJwt(id: string) {
@@ -147,5 +149,14 @@ export class AuthService {
       );
     }
     return user;
+  }
+
+  public async getUserFromAuthenticationToken(token: string) {
+    const payload: { userId: string } = this.jwtService.verify(token, {
+      secret: this.configService.get('secret'),
+    });
+    if (payload.userId) {
+      return this.usersService.findById(payload.userId);
+    }
   }
 }
