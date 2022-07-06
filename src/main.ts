@@ -2,6 +2,7 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { validateHeaders } from './app.middleware';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -12,7 +13,7 @@ async function bootstrap() {
   });
   app.useGlobalPipes(new ValidationPipe());
   const configService = app.get<ConfigService>(ConfigService);
-
+  app.use(validateHeaders);
   const config = new DocumentBuilder()
     .setTitle('Event space')
     .setDescription('Provides Api to event spaces app')

@@ -3,11 +3,14 @@ import { ChatService } from './chat.service';
 
 describe('ChatService', () => {
   let service: ChatService;
-
+  const mockAuthService = {};
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [ChatService],
-    }).compile();
+    })
+      .overrideProvider(ChatService)
+      .useValue(mockAuthService)
+      .compile();
 
     service = module.get<ChatService>(ChatService);
   });

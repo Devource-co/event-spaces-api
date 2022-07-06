@@ -5,10 +5,15 @@ import { ChatService } from './chat.service';
 describe('ChatGateway', () => {
   let gateway: ChatGateway;
 
+  const mockChatsService = {};
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [ChatGateway, ChatService],
-    }).compile();
+    })
+      .overrideProvider(ChatService)
+      .useValue(mockChatsService)
+      .compile();
 
     gateway = module.get<ChatGateway>(ChatGateway);
   });

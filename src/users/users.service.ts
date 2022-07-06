@@ -1,13 +1,20 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
+
   async create(createUserDto: CreateUserDto) {
     const checkUser = await this.findByEmail(createUserDto.email);
     if (!checkUser) {
-      const user = User.create(createUserDto);
+      const user = this.usersRepository.create(createUserDto);
       await user.save();
 
       delete user.password;
@@ -23,6 +30,11 @@ export class UsersService {
     }
   }
 
+  async update(userId, updateDto) {
+    const user = this.findById(userId);
+    return user;
+  }
+
   async showById(id: string): Promise<User> {
     const user = await this.findById(id);
 
@@ -31,7 +43,7 @@ export class UsersService {
   }
 
   async createUser(userDetails: Partial<User>) {
-    const user = User.create(userDetails);
+    const user = this.usersRepository.create(userDetails);
     await user.save();
 
     delete user.password;
@@ -39,11 +51,11 @@ export class UsersService {
   }
 
   async findById(id: string) {
-    return await User.findOne(id);
+    return await this.usersRepository.findOne(id);
   }
 
   async findByEmail(email: string) {
-    return await User.findOne({
+    return await this.usersRepository.findOne({
       where: {
         email: email,
       },
