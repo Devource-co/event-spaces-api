@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   Post,
+  Request,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -12,7 +13,7 @@ import { AuthLoginDto } from './dto/auth-login.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { SocialLoginDto } from './dto/socials-login.dto';
-import { TransformInterceptor } from 'src/utils/transform.interceptor';
+import { TransformInterceptor } from '../utils/transform.interceptor';
 
 @Controller({
   version: '1',
@@ -48,7 +49,7 @@ export class AuthController {
     return this.authService.loginSocial({
       email: socialUser.email,
       name: socialUser.name,
-      type: 'facebook',
+      type: 'google',
     });
   }
 
@@ -56,7 +57,8 @@ export class AuthController {
   @Get()
   @HttpCode(200)
   @UseInterceptors(TransformInterceptor)
-  async test() {
+  async test(@Request() req) {
+    console.log('----->', req.user);
     return { message: 'Success!' };
   }
 }

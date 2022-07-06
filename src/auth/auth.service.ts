@@ -30,6 +30,7 @@ export class AuthService {
     const user = await this.validateUser(authLoginDto);
     return {
       access_token: await this._signJwt(user.id),
+      user,
     };
   }
 
@@ -46,7 +47,7 @@ export class AuthService {
         HttpStatus.UNAUTHORIZED,
       );
     }
-
+    delete user.password;
     return user;
   }
 
@@ -57,11 +58,28 @@ export class AuthService {
     picture?: string;
   }) {
     const user = await this.usersService.findByEmail(userDetails.email);
+
     if (user) {
+      // if (
+      //   (userDetails.type === 'facebook' && !user.connectedToFacebook) ||
+      //   (userDetails.type === 'google' && !user.connectedToGoogle)
+      // ) {
+      //   throw new HttpException(
+      //     {
+      //       status: HttpStatus.UNPROCESSABLE_ENTITY,
+      //       error: `${
+      //         userDetails.type === 'facebook' ? 'Facebook' : 'Google'
+      //       } account not connected to findySpace, kindly login and connect it`,
+      //     },
+      //     HttpStatus.UNPROCESSABLE_ENTITY,
+      //   );
+      // }
       return {
         access_token: await this._signJwt(user.id),
         register: false,
+        user,
       };
+      delete user.password;
     } else {
       const usr = await this.usersService.createUser({
         email: userDetails.email,
@@ -69,11 +87,13 @@ export class AuthService {
         lastname: userDetails.name?.split(' ')?.[1] || '',
         connectedToFacebook: userDetails.type === 'facebook',
         connectedToGoogle: userDetails.type === 'google',
+        email_verified: true,
       });
-
+      delete usr.password;
       return {
         access_token: await this._signJwt(usr.id),
         register: true,
+        user: usr,
       };
     }
   }
@@ -103,6 +123,7 @@ export class AuthService {
       if (!responseData.email) throw new Error('');
       return responseData;
     } catch (error) {
+      console.log(error);
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,
@@ -117,16 +138,17 @@ export class AuthService {
   async validateGoogle(socialToken: SocialLoginDto) {
     try {
       const client = new OAuth2Client(
-        '22752663344-pten3is5r0queuloc6ni34o5udal3o7a.apps.googleusercontent.com',
+        '574167298510-o2d2vhgc7pa7e0dp9kpudfdugaidaevi.apps.googleusercontent.com',
       );
       const ticket = await client.verifyIdToken({
         idToken: socialToken.accessToken,
         audience:
-          '22752663344-pten3is5r0queuloc6ni34o5udal3o7a.apps.googleusercontent.com',
+          '574167298510-o2d2vhgc7pa7e0dp9kpudfdugaidaevi.apps.googleusercontent.com',
       });
       if (!ticket.getPayload().email) throw new Error('');
       return ticket.getPayload();
     } catch (error) {
+      console.log('----->', error);
       throw new HttpException(
         {
           status: HttpStatus.BAD_REQUEST,

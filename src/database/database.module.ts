@@ -13,6 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         logger: 'file',
         entities: ['dist/**/*.entity.js'],
         migrations: ['dist/src/db/migrations/*js'],
+        autoLoadEntities: true,
         cli: {
           migrationsDir: 'src/db/migrations',
         },

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -8,5 +8,8 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsNotEmpty()
+  @MinLength(8, {
+    message: 'password should have at least 8 characters',
+  })
   password: string;
 }

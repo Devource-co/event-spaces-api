@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Industry } from './industry.entity';
+import { Role } from '../../auth/role.enum';
 
 @Entity()
 @Index(['id', 'email'])
@@ -35,16 +36,16 @@ export class User extends BaseEntity {
   phone?: string;
 
   @Column({ default: false })
-  emailVerified?: boolean;
+  email_verified?: boolean;
 
   @Column({ default: false })
-  phoneVerified?: boolean;
+  phone_verified?: boolean;
 
   @Column({ nullable: true })
   bio?: string;
 
   @Column({ nullable: true })
-  profilepic?: string;
+  profile_pic?: string;
 
   @Column({ nullable: true })
   jobTitle?: string;
@@ -58,13 +59,16 @@ export class User extends BaseEntity {
   @Column({ default: false })
   connectedToFacebook?: boolean;
 
-  @Column({ nullable: true })
-  industryId?: string;
+  @Column({ nullable: true, type: 'uuid' })
+  industry_id?: string;
 
   @Index('industry_userId_index')
-  @ManyToOne(() => Industry, (industry: Industry) => industry.id)
-  @JoinColumn({ name: 'userId' })
-  industry: Industry;
+  @ManyToOne(() => Industry, { cascade: true })
+  @JoinColumn({ name: 'industry_id', referencedColumnName: 'id' })
+  industry?: Industry;
+
+  @Column({ type: 'enum', enum: Role, default: Role.USER })
+  role: Role;
 
   @Column()
   @CreateDateColumn()

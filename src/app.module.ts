@@ -10,9 +10,11 @@ import { AppLoggerMiddleware } from './middlewares/requestlogger.middleware';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ChatModule } from './chat/chat.module';
-import { JwtModule } from '@nestjs/jwt';
 import { HttpModule } from '@nestjs/axios';
-import { AdvertModule } from './advert/advert.module';
+import { SpaceModule } from './space/space.module';
+import { BlogModule } from './blog/blog.module';
+import { AddressModule } from './address/address.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -22,15 +24,17 @@ import { AdvertModule } from './advert/advert.module';
       cache: true,
     }),
     DatabaseModule,
+    UsersModule,
     HttpModule,
     AuthModule,
-    UsersModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'static'),
-      exclude: ['/api*', '/v1*'],
     }),
     ChatModule,
-    AdvertModule,
+    SpaceModule,
+    BlogModule,
+    AddressModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [],
