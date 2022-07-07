@@ -13,7 +13,7 @@ env:
   SSH_KEY: ${{secrets.SSH_KEY}}
   SSH_USERNAME: ${{secrets.SSH_USERNAME}}
   STAGING_ENV_FILE: ${{secrets.STAGING_ENV_FILE}}
-  GITHUB_SHA: ${GITHUB_SHA}
+  GITHUB_SHA: ${GITHUB_SHA::7}
 
 jobs:
   test:
@@ -46,7 +46,7 @@ jobs:
       - name: docker login
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - name: Build client image
+      - name: Build api image
         run: |
           docker build . --file Dockerfile.staging --tag $DOCKER_USER/findy-api-staging:$GITHUB_SHA
       - name: Push the client image to registry
@@ -96,7 +96,6 @@ jobs:
             --restart=always \
             --name api-staging \
             --env-file .env \
-            --network nginx-proxy-manager_default \
             --network findyspace \
             $DOCKER_USER/findy-api-staging:$GITHUB_SHA
             docker image prune -f
