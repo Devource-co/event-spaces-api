@@ -1,5 +1,5 @@
 // this function is to macSign a string
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import generateHkdfKey from './generateHkdfKey';
 
 const macSign = (ikm, info, cipherText) => {

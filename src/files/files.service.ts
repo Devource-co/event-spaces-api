@@ -38,6 +38,6 @@ export class FilesService {
   }
 
   async findOne(id: string) {
-    return this.filesRepository.findOne(id);
+    return this.filesRepository.findOneBy({ id });
   }
 }

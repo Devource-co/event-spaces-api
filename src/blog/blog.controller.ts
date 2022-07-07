@@ -27,7 +27,7 @@ export class BlogController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.blogService.findOne(+id);
+    return {};
   }
 
   @Patch(':id')

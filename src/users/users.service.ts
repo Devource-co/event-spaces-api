@@ -51,14 +51,12 @@ export class UsersService {
   }
 
   async findById(id: string) {
-    return await this.usersRepository.findOne(id);
+    return await this.usersRepository.findOneBy({ id });
   }
 
   async findByEmail(email: string) {
-    return await this.usersRepository.findOne({
-      where: {
-        email: email,
-      },
+    return await this.usersRepository.findOneBy({
+      email,
     });
   }
 }

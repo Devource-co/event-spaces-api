@@ -9,9 +9,9 @@ import {
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
 import { Space } from './entities/space.entity';
-import { FilesService } from 'src/files/files.service';
-import { AddressService } from 'src/address/address.service';
-import { ActivityService } from 'src/activities/activities.service';
+import { FilesService } from '../files/files.service';
+import { AddressService } from '../address/address.service';
+import { ActivityService } from '../activities/activities.service';
 
 @Injectable()
 export class SpaceService {
@@ -44,14 +44,24 @@ export class SpaceService {
   }
 
   async findOne(id: string) {
-    return this.spacesRepository.findOne(id, {
-      relations: ['images'],
+    return this.spacesRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        images: true,
+      },
     });
   }
 
   async update(id: string, updateSpaceDto: UpdateSpaceDto) {
-    const space = await this.spacesRepository.findOne(id, {
-      relations: ['images'],
+    const space = await this.spacesRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        images: true,
+      },
     });
     let dataUpdate = {
       id,

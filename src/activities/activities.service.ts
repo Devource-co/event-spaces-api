@@ -11,6 +11,6 @@ export class ActivityService {
   ) {}
 
   async findOne(id: string) {
-    return this.activityRepository.findOne(id);
+    return this.activityRepository.findOneBy({ id });
   }
 }

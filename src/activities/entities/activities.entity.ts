@@ -23,6 +23,9 @@ export class Activity {
   @Column({ nullable: true })
   category_id?: string;
 
+  @Column({ nullable: true })
+  tags: string;
+
   @ManyToOne(() => CategoryActivity, { cascade: true })
   @JoinColumn({ name: 'category_id' })
   type: CategoryActivity;

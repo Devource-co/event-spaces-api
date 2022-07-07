@@ -12,8 +12,8 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { TransformInterceptor } from 'src/utils/transform.interceptor';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { TransformInterceptor } from '../utils/transform.interceptor';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller({

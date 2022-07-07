@@ -161,7 +161,8 @@ export class AuthService {
 
   async validateUserToken({ userId: id }) {
     const user = await this.usersService.findById(id);
-    if (!user.email) {
+    console.log(user);
+    if (!user?.email) {
       throw new HttpException(
         {
           status: HttpStatus.UNAUTHORIZED,

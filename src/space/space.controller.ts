@@ -13,11 +13,13 @@ import {
   HttpCode,
   UseInterceptors,
   ParseArrayPipe,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import { SpaceService } from './space.service';
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
-import { TransformInterceptor } from 'src/utils/transform.interceptor';
+import { TransformInterceptor } from '../utils/transform.interceptor';
 
 @Controller({
   version: '1',
@@ -61,7 +63,17 @@ export class SpaceController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.spaceService.findOne(id);
+    const space = await this.spaceService.findOne(id);
+    if (!space) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'Space does not exist',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return space;
   }
 
   @Patch(':id')

@@ -27,7 +27,7 @@ export class AddressController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.addressService.findOne(+id);
+    return {};
   }
 
   @Patch(':id')

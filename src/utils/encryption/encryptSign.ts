@@ -1,5 +1,5 @@
 // this function encrypt and signs the text
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import encrypt from './encrypt';
 import macSign from './macSign';
 

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsIn, IsInt, IsString } from 'class-validator';
-import { CreateAddressDto } from 'src/address/dto/create-address.dto';
+import { CreateAddressDto } from '../../address/dto/create-address.dto';
 
 export class CreateSpaceDto {
   @ApiProperty()

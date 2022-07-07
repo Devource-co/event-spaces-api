@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 // this function is purely to get the encrypted string
 // for now we will return it as base 64
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import getAlgorithm from './getAlgorithm';
 import generateHkdfKey from './generateHkdfKey';
 

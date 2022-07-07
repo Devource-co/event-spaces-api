@@ -6,8 +6,8 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { JwtModule } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
-import { UsersModule } from 'src/users/users.module';
+import { UsersService } from '../users/users.service';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
