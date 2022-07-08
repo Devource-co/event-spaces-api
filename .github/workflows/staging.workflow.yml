@@ -1,0 +1,103 @@
+name: staging
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ staging ]
+  pull_request:
+    branches: [ staging ]
+  
+env:
+  DOCKER_USER: ${{secrets.DOCKER_USER}}
+  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+  SSH_HOST: ${{secrets.SSH_HOST}}
+  SSH_KEY: ${{secrets.SSH_KEY}}
+  SSH_USERNAME: ${{secrets.SSH_USERNAME}}
+  STAGING_ENV_FILE: ${{secrets.STAGING_ENV_FILE}}
+  GITHUB_SHA: ${GITHUB_SHA::7}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+          node-version: [16.X]
+    steps:
+        - uses: actions/checkout@v2
+        - name: Use Node.js ${{ matrix.node-version }}
+          uses: actions/setup-node@v1
+          with:
+            node-version: ${{ matrix.node-version }}
+        - name: testing
+          run: |
+            echo "$STAGING_ENV_FILE" > .env
+            yarn install --frozen-lockfile
+            yarn lint
+            yarn build
+          shell: bash
+
+  publish:
+    needs: test
+    runs-on:  ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: copy .env files
+        run: echo "$STAGING_ENV_FILE" > .env
+      - name: docker login
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Build api image
+        run: |
+          docker build . --file Dockerfile.staging --tag $DOCKER_USER/findy-api-staging:$GITHUB_SHA
+      - name: Push the client image to registry
+        run: docker push $DOCKER_USER/findy-api-staging:$GITHUB_SHA
+  deploy-staging:
+    needs:
+      - publish
+    runs-on:  ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Create .env file
+        run: |
+          cat > .configenv << EOF
+          export DOCKER_USER=$DOCKER_USER
+          export GITHUB_SHA=$GITHUB_SHA
+          export DOCKER_PASSWORD=$DOCKER_PASSWORD
+          EOF
+          echo "$STAGING_ENV_FILE" > .env
+
+      - name: Copy Dockerfile to staging
+        uses: appleboy/scp-action@master
+        with:
+          host: $SSH_HOST
+          key: $SSH_KEY
+          username: $SSH_USERNAME
+          source: '.env,.configenv'
+          target: '~/findyspace/staging/api/'
+      - name: Deploy the Api
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: $SSH_HOST
+          key: $SSH_KEY
+          username: $SSH_USERNAME
+          script: |
+            echo "Pulling images from registry..."
+            cd /root/findyspace/staging/api
+            source .configenv
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+            docker pull $DOCKER_USER/findy-api-staging:$GITHUB_SHA
+            docker stop api-staging
+            docker rm api-staging
+            echo "Running new image..."
+            docker run -d \
+            --expose=3090 \
+            -p 3091:3090 \
+            --restart=always \
+            --name api-staging \
+            --env-file .env \
+            --network findyspace \
+            $DOCKER_USER/findy-api-staging:$GITHUB_SHA
+            docker image prune -f
+           
+         

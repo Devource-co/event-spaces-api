@@ -4,8 +4,7 @@ import { TransformInterceptor } from './utils/transform.interceptor';
 @Controller()
 export class AppController {
   @Get()
-  @UseInterceptors(TransformInterceptor)
   getHello() {
-    return { message: 'Welcome to Events planner!', result: {} };
+    return { message: 'Hello FindySpace!' };
   }
 }
