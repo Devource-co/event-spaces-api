@@ -25,7 +25,10 @@ export class AuthController {
   @Post('login')
   @HttpCode(200)
   @UseInterceptors(TransformInterceptor)
-  async login(@Body() authLoginDto: AuthLoginDto) {
+  async login(@Body() authLoginDto: AuthLoginDto, @Request() req) {
+    const ip =
+      req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
+    console.log(ip);
     return this.authService.login(authLoginDto);
   }
 
@@ -33,6 +36,7 @@ export class AuthController {
   @HttpCode(200)
   @UseInterceptors(TransformInterceptor)
   async loginWithFacebook(@Body() socialLoginDto: SocialLoginDto) {
+    console.log(socialLoginDto);
     const socialUser = await this.authService.validateFacebook(socialLoginDto);
     return this.authService.loginSocial({
       email: socialUser.email,

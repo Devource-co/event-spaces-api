@@ -1,5 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { Role } from '../../auth/role.enum';
+import { IsAlpha, IsBoolean, IsOptional, IsString } from 'class-validator';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from './create-user.dto';
 
@@ -8,35 +8,53 @@ export class UpdateUserDto
   implements Partial<User>
 {
   @ApiProperty()
+  @IsAlpha()
+  @IsOptional()
   firstname?: string;
 
   @ApiProperty()
+  @IsAlpha()
+  @IsOptional()
   lastname?: string;
 
   @ApiProperty()
-  email_verified?: boolean;
-
-  @ApiProperty()
+  @IsString()
+  @IsOptional()
   bio?: string;
 
   @ApiProperty()
   profile_pic?: string;
 
   @ApiProperty()
+  @IsBoolean()
+  @IsOptional()
   connectedToFacebook?: boolean;
 
   @ApiProperty()
+  @IsBoolean()
+  @IsOptional()
   connectedToGoogle?: boolean;
 
   @ApiProperty()
+  @IsOptional()
   industry_id?: string;
 
   @ApiProperty()
+  @IsOptional()
   phone?: string;
 
   @ApiProperty()
-  phone_verified?: boolean;
+  @IsString()
+  @IsOptional()
+  jobTitle?: string;
 
   @ApiProperty()
-  role?: Role;
+  @IsString()
+  @IsOptional()
+  organization?: string;
+
+  @ApiProperty()
+  @IsBoolean()
+  @IsOptional()
+  allowNotifications?: boolean;
 }

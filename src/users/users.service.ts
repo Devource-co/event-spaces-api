@@ -30,9 +30,21 @@ export class UsersService {
     }
   }
 
-  async update(userId, updateDto) {
-    const user = this.findById(userId);
-    return user;
+  async update(user, updateDto) {
+    if (updateDto.password) {
+      if (!(await user?.validatePassword(updateDto.password))) {
+        throw new HttpException(
+          {
+            status: HttpStatus.UNAUTHORIZED,
+            error: 'Wrong current password',
+          },
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+    }
+
+    await this.usersRepository.update(user.id, updateDto);
+    return await this.findById(user.id);
   }
 
   async showById(id: string): Promise<User> {
