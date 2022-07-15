@@ -29,21 +29,22 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('get_profile')
+  @Get('get-profile')
   @UseInterceptors(TransformInterceptor)
   async getProfile(@Request() req) {
     const userId = req.user?.id;
+    console.log(req.user.validatePassword);
     const user = await this.usersService.findById(userId);
     delete user.password;
     return user;
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch('edit_profile')
+  @Patch('edit-profile')
   @UseInterceptors(TransformInterceptor)
   async editProfile(@Request() req, @Body() updateUserDto: UpdateUserDto) {
-    const userId = req.user?.id;
-    const user = await this.usersService.update(userId, updateUserDto);
+    const oldUser = req.user;
+    const user = await this.usersService.update(oldUser, updateUserDto);
     delete user.password;
     return user;
   }
