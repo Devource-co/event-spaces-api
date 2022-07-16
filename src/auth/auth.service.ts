@@ -74,12 +74,12 @@ export class AuthService {
       //     HttpStatus.UNPROCESSABLE_ENTITY,
       //   );
       // }
+      delete user.password;
       return {
         access_token: await this._signJwt(user.id),
         register: false,
         user,
       };
-      delete user.password;
     } else {
       const usr = await this.usersService.createUser({
         email: userDetails.email,
@@ -161,7 +161,6 @@ export class AuthService {
 
   async validateUserToken({ userId: id }) {
     const user = await this.usersService.findById(id);
-    console.log(user);
     if (!user?.email) {
       throw new HttpException(
         {

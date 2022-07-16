@@ -59,6 +59,9 @@ export class User extends BaseEntity {
   @Column({ default: false })
   connectedToFacebook?: boolean;
 
+  @Column({ default: false })
+  hasPassword?: boolean;
+
   @Column({ nullable: true, type: 'uuid' })
   industry_id?: string;
 
@@ -69,6 +72,9 @@ export class User extends BaseEntity {
 
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
+
+  @Column({ default: false })
+  allowNotifications?: boolean;
 
   @Column()
   @CreateDateColumn()
