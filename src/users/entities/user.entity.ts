@@ -59,6 +59,9 @@ export class User extends BaseEntity {
   @Column({ default: false })
   connectedToFacebook?: boolean;
 
+  @Column({ default: false })
+  hasPassword?: boolean;
+
   @Column({ nullable: true, type: 'uuid' })
   industry_id?: string;
 

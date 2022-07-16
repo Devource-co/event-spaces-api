@@ -1,5 +1,5 @@
 #!/bin/sh
 
-yarn  migration:run
+yarn migration:run
 
 yarn start
