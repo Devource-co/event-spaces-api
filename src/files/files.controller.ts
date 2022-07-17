@@ -1,5 +1,8 @@
 import {
   Controller,
+  Delete,
+  Get,
+  Param,
   Post,
   Query,
   Req,
@@ -19,6 +22,12 @@ import { FilesService } from './files.service';
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
+  @Get()
+  @UseInterceptors(TransformInterceptor)
+  async getAll() {
+    return this.filesService.findAll();
+  }
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   @UseInterceptors(TransformInterceptor)
@@ -33,5 +42,10 @@ export class FilesController {
       url,
       query.folder as string,
     );
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return this.filesService.delete(id);
   }
 }
