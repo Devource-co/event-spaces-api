@@ -5,11 +5,11 @@ import { CreateAddressDto } from '../../address/dto/create-address.dto';
 export class CreateSpaceDto {
   @ApiProperty()
   @IsString()
-  title: string;
+  title?: string;
 
   @ApiProperty()
   @IsString()
-  description: string;
+  description?: string;
 
   @ApiProperty()
   youtube_url?: string;
@@ -21,7 +21,6 @@ export class CreateSpaceDto {
   property_size?: string;
 
   @ApiProperty()
-  @IsInt()
   parking_slots?: number;
 
   @ApiProperty()

@@ -33,11 +33,11 @@ export class Space extends BaseEntity {
   @Column({ nullable: true })
   address_id?: string;
 
-  @OneToOne(() => Address, { cascade: true })
+  @OneToOne(() => Address, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'address_id' })
   address: Address;
 
-  @ManyToMany(() => Activity)
+  @ManyToMany(() => Activity, (activity) => activity.id, { cascade: true })
   @JoinTable()
   activities?: Activity[];
 
@@ -46,7 +46,7 @@ export class Space extends BaseEntity {
 
   @ManyToOne(() => SpaceType, { cascade: true })
   @JoinColumn({ name: 'type_id' })
-  type: SpaceType;
+  type?: SpaceType;
 
   @Column({ nullable: true })
   max_guests?: string;
@@ -72,7 +72,7 @@ export class Space extends BaseEntity {
   @Column({ default: false })
   publish?: boolean;
 
-  @ManyToMany(() => File)
+  @ManyToMany(() => File, (file) => file.id, { cascade: true })
   @JoinTable()
   images?: File[];
 
@@ -81,7 +81,7 @@ export class Space extends BaseEntity {
 
   @OneToOne(() => File)
   @JoinColumn({ name: 'thumbnail_id' })
-  thumbNail: File;
+  thumbNail?: File;
 
   @Column()
   @CreateDateColumn()

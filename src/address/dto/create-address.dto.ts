@@ -18,5 +18,11 @@ export class CreateAddressDto {
   zip_code?: string;
 
   @ApiProperty()
+  lat: number;
+
+  @ApiProperty()
+  long: number;
+
+  @ApiProperty()
   location?: Point;
 }
