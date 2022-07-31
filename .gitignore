@@ -170,3 +170,5 @@ dist
 
 # Ignore code-workspaces
 *.code-workspace
+
+static/files/*

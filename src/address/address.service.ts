@@ -32,11 +32,15 @@ export class AddressService {
   }
 
   async update(id: string, updateAddressDto: UpdateAddressDto) {
-    return updateQueryHelper<Address, UpdateAddressDto, { id: string }>(
-      this.addressRepository,
-      updateAddressDto,
-      { id },
-    );
+    if (updateAddressDto.lat && updateAddressDto.long) {
+      const pointObject: Point = {
+        type: 'Point',
+        coordinates: [updateAddressDto.long, updateAddressDto.lat],
+      };
+      updateAddressDto.location = pointObject;
+    }
+    await this.addressRepository.update({ id }, updateAddressDto);
+    return this.addressRepository.findOneBy({ id });
   }
 
   remove(id: string) {

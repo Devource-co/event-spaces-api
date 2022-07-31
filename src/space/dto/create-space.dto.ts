@@ -1,14 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsIn, IsInt, IsString } from 'class-validator';
 import { CreateAddressDto } from '../../address/dto/create-address.dto';
 
 export class CreateSpaceDto {
   @ApiProperty()
-  @IsString()
   title?: string;
 
   @ApiProperty()
-  @IsString()
   description?: string;
 
   @ApiProperty()
@@ -24,15 +21,12 @@ export class CreateSpaceDto {
   parking_slots?: number;
 
   @ApiProperty()
-  @IsBoolean()
   onproperty_parking?: boolean;
 
   @ApiProperty()
-  @IsBoolean()
   street_parking?: boolean;
 
   @ApiProperty()
-  @IsBoolean()
   parking_close?: boolean;
 
   @ApiProperty()

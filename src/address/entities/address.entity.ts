@@ -30,10 +30,10 @@ export class Address {
   @Column({ nullable: true })
   zip_code?: string;
 
-  @Column({ type: 'double precision', name: 'd_lat' })
+  @Column({ type: 'double precision', name: 'd_lat', nullable: true })
   lat: number;
 
-  @Column({ type: 'double precision', name: 'd_long' })
+  @Column({ type: 'double precision', name: 'd_long', nullable: true })
   long: number;
 
   @OneToOne(() => Space, (space) => space.address, {

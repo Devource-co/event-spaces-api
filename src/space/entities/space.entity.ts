@@ -15,6 +15,7 @@ import {
 import { Activity } from '../../activities/entities/activities.entity';
 import { Address } from '../../address/entities/address.entity';
 import { SpaceType } from './spaceType.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Space extends BaseEntity {
@@ -40,6 +41,13 @@ export class Space extends BaseEntity {
   @ManyToMany(() => Activity, (activity) => activity.id, { cascade: true })
   @JoinTable()
   activities?: Activity[];
+
+  @Column({ nullable: true })
+  owner_id?: string;
+
+  @ManyToOne(() => User, { cascade: true })
+  @JoinColumn({ name: 'owner_id' })
+  user?: User;
 
   @Column({ nullable: true })
   type_id?: string;
