@@ -50,6 +50,8 @@ export class SpaceService {
       },
       relations: {
         images: true,
+        address: true,
+        activities: true,
       },
     });
   }
@@ -70,14 +72,10 @@ export class SpaceService {
     };
     const isUpdateImages = !!updateSpaceDto.images?.length;
     if (isUpdateImages) {
-      space.images.forEach(({ id }) => {
-        updateSpaceDto.images.push(id);
-      });
-      const images = [];
-      await updateSpaceDto.images?.forEach(async (id) => {
-        const image = await this.fileService.findOne(id);
-        images.push(image);
-      });
+      const newImages = updateSpaceDto.images.map((imageId) => ({
+        id: imageId,
+      }));
+      const images = [...space.images, ...newImages];
 
       dataUpdate = {
         ...dataUpdate,
@@ -86,17 +84,25 @@ export class SpaceService {
     }
     const isUpdateActivities = !!updateSpaceDto.activities?.length;
     if (isUpdateActivities) {
-      const activities = [];
-      updateSpaceDto.activities?.forEach(async (id) => {
-        const activity = await this.activitiesService.findOne(id);
-        activities.push(activity);
-      });
+      const activities = updateSpaceDto.activities.map((activityId) => ({
+        id: activityId,
+      }));
       dataUpdate = {
         activities,
         ...dataUpdate,
       };
     }
-    return this.spacesRepository.save(dataUpdate);
+    await this.spacesRepository.save(dataUpdate);
+    return await this.spacesRepository.findOne({
+      where: {
+        id,
+      },
+      relations: {
+        images: true,
+        address: true,
+        activities: true,
+      },
+    });
   }
 
   async remove(id: string) {

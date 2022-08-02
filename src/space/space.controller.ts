@@ -83,8 +83,6 @@ export class SpaceController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    const deleted = this.spaceService.remove(id);
-    console.log(deleted);
     return this.spaceService.remove(id);
   }
 }

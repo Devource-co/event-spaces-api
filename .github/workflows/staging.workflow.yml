@@ -96,7 +96,7 @@ jobs:
             --restart=always \
             --name api-staging \
             --env-file .env \
-            --network findyspace \
+            --network nginx-proxy-manager_default \
             $DOCKER_USER/findy-api-staging:$GITHUB_SHA
             docker image prune -f
            

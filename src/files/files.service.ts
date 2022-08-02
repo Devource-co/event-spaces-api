@@ -30,7 +30,6 @@ export class FilesService {
       await fileData.save();
       return fileData;
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -43,5 +42,13 @@ export class FilesService {
 
   async findOne(id: string) {
     return this.filesRepository.findOneBy({ id });
+  }
+
+  async findAll() {
+    return this.filesRepository.find();
+  }
+
+  async delete(id: string) {
+    return this.filesRepository.delete({ id });
   }
 }

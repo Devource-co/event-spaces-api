@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Point } from 'geojson';
+import { Space } from '../../space/entities/space.entity';
 
 @Entity()
 export class Address {
@@ -27,6 +29,17 @@ export class Address {
 
   @Column({ nullable: true })
   zip_code?: string;
+
+  @Column({ type: 'double precision', name: 'd_lat', nullable: true })
+  lat: number;
+
+  @Column({ type: 'double precision', name: 'd_long', nullable: true })
+  long: number;
+
+  @OneToOne(() => Space, (space) => space.address, {
+    onDelete: 'CASCADE',
+  })
+  space?: Space;
 
   @Index({ spatial: true })
   @Column({
