@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Raw, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Point } from 'geojson';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { Address } from './entities/address.entity';
-import { updateQueryHelper } from '../utils/queryHelper';
 
 @Injectable()
 export class AddressService {

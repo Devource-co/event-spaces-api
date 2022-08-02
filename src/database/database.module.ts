@@ -18,7 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         cli: {
           migrationsDir: 'src/db/migrations',
         },
-        synchronize: configService.get<string>('env') !== 'production',
+        synchronize: false,
       }),
     }),
   ],
