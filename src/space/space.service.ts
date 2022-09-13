@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -22,11 +22,12 @@ export class SpaceService {
     private addressService: AddressService,
     private activitiesService: ActivityService,
   ) {}
-  async create(createSpaceDto: CreateSpaceDto) {
+  async create(createSpaceDto: CreateSpaceDto, userId: string) {
     const space = this.spacesRepository.create({
       ...createSpaceDto,
       images: [],
       activities: [],
+      owner_id: userId,
     });
     await space.save();
     return space;
@@ -56,7 +57,7 @@ export class SpaceService {
     });
   }
 
-  async update(id: string, updateSpaceDto: UpdateSpaceDto) {
+  async update(id: string, updateSpaceDto: UpdateSpaceDto, userId: string) {
     const space = await this.spacesRepository.findOne({
       where: {
         id,
@@ -65,6 +66,15 @@ export class SpaceService {
         images: true,
       },
     });
+    if (space.owner_id !== userId) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'Unable to edit, space does not belong to you.',
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
     let dataUpdate = {
       id,
       ...space,

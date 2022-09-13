@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -10,7 +11,7 @@ import {
 import { CategoryActivity } from './categoryActivities.entity';
 
 @Entity()
-export class Activity {
+export class Activity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -25,6 +26,9 @@ export class Activity {
 
   @Column({ nullable: true })
   tags: string;
+
+  @Column({ nullable: true })
+  image_url?: string;
 
   @ManyToOne(() => CategoryActivity, { cascade: true })
   @JoinColumn({ name: 'category_id' })

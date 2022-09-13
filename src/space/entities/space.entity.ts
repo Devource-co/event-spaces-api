@@ -42,8 +42,8 @@ export class Space extends BaseEntity {
   @JoinTable()
   activities?: Activity[];
 
-  @Column({ nullable: true })
-  owner_id?: string;
+  @Column({ nullable: false })
+  owner_id: string;
 
   @ManyToOne(() => User, { cascade: true })
   @JoinColumn({ name: 'owner_id' })
