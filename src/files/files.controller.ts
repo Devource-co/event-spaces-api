@@ -10,7 +10,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { TransformInterceptor } from '../utils/transform.interceptor';
 import { FileQueryDTO } from './dto/FileQuery.dto';
 import { FilesService } from './files.service';
 
@@ -23,14 +22,12 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @Get()
-  @UseInterceptors(TransformInterceptor)
   async getAll() {
     return this.filesService.findAll();
   }
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  @UseInterceptors(TransformInterceptor)
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Req() req: any,

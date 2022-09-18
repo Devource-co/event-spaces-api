@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { validateHeaders } from './app.middleware';
 import { AppModule } from './app.module';
+import { TransformInterceptor } from './utils/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -12,6 +13,7 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalInterceptors(new TransformInterceptor());
   const configService = app.get<ConfigService>(ConfigService);
   app.use(validateHeaders);
   const config = new DocumentBuilder()

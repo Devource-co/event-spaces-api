@@ -11,7 +11,6 @@ import {
   ParseIntPipe,
   ParseBoolPipe,
   HttpCode,
-  UseInterceptors,
   ParseArrayPipe,
   HttpStatus,
   HttpException,
@@ -21,7 +20,6 @@ import {
 import { SpaceService } from './space.service';
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
-import { TransformInterceptor } from '../utils/transform.interceptor';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller({
@@ -34,7 +32,6 @@ export class SpaceController {
   @Post()
   @HttpCode(201)
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(TransformInterceptor)
   create(@Body() createSpaceDto: CreateSpaceDto, @Request() req) {
     const userId = req.user?.id;
     return this.spaceService.create(createSpaceDto, userId);
@@ -42,7 +39,6 @@ export class SpaceController {
 
   @Get()
   @HttpCode(200)
-  @UseInterceptors(TransformInterceptor)
   async findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
