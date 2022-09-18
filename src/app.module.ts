@@ -15,6 +15,7 @@ import { SpaceModule } from './space/space.module';
 import { BlogModule } from './blog/blog.module';
 import { AddressModule } from './address/address.module';
 import { FilesModule } from './files/files.module';
+import { SpacetypesModule } from './spacetypes/spacetypes.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { FilesModule } from './files/files.module';
     BlogModule,
     AddressModule,
     FilesModule,
+    SpacetypesModule,
   ],
   controllers: [AppController],
   providers: [],

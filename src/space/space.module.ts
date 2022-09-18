@@ -6,7 +6,8 @@ import { Space } from './entities/space.entity';
 import { FilesModule } from '../files/files.module';
 import { AddressModule } from '../address/address.module';
 import { ActivitiesModule } from '../activities/activities.module';
-import { SpaceType } from './entities/spaceType.entity';
+import { SpaceType } from '../spacetypes/entities/spacetype.entity';
+import { SpacetypesModule } from '../spacetypes/spacetypes.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SpaceType } from './entities/spaceType.entity';
     FilesModule,
     AddressModule,
     ActivitiesModule,
+    SpacetypesModule,
   ],
   controllers: [SpaceController],
   providers: [SpaceService],
