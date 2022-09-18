@@ -18,6 +18,9 @@ export class SpaceType extends BaseEntity {
   @Column({ nullable: true })
   description?: string;
 
+  @Column({ nullable: true })
+  cover_image?: string;
+
   @Column()
   @CreateDateColumn()
   createdAt: Date;

@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseArrayPipe,
   Patch,
   Post,
   Query,
@@ -30,6 +31,27 @@ export class ActivityController {
   @Post('create-category')
   async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
     return this.activityService.createCategory(createCategoryDto);
+  }
+
+  @Get()
+  async getAllActivities(
+    @Query(
+      'category-ids',
+      new ParseArrayPipe({ items: String, separator: ',', optional: true }),
+    )
+    ids: string[] = [],
+  ) {
+    return this.activityService.findAll(ids);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'superadmin')
+  @Patch(':id')
+  async updateActivity(
+    @Body() updateActivityDto: UpdateActivityDto,
+    @Param('id') id: string,
+  ) {
+    return this.activityService.update(id, updateActivityDto);
   }
 
   @Get('get-categories')
@@ -65,21 +87,6 @@ export class ActivityController {
     @Param('id') id: string,
   ) {
     return this.activityService.updateCategory(id, updateCategoryDto);
-  }
-
-  @Get()
-  async getAllActivities(@Query('category-id') categoryId = null) {
-    return this.activityService.findAll(categoryId);
-  }
-
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin', 'superadmin')
-  @Patch(':id')
-  async updateActivity(
-    @Body() updateActivityDto: UpdateActivityDto,
-    @Param('id') id: string,
-  ) {
-    return this.activityService.update(id, updateActivityDto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

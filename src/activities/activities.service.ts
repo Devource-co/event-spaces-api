@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateActivityDto } from './dto/createActivity';
 import { CreateCategoryDto } from './dto/createCategory';
 import UpdateActivityDto from './dto/updateActivityDto';
@@ -17,9 +17,11 @@ export class ActivityService {
     private categoryRepository: Repository<CategoryActivity>,
   ) {}
 
-  async findAll(categoryId: string) {
+  async findAll(categoryIds?: string[]) {
     return this.activityRepository.find({
-      ...(categoryId && { where: { category_id: categoryId } }),
+      ...(categoryIds?.length > 0 && {
+        where: { category_id: In(categoryIds) },
+      }),
     });
   }
 

@@ -57,7 +57,7 @@ export class Space extends BaseEntity {
   type?: SpaceType;
 
   @Column({ nullable: true })
-  max_guests?: string;
+  max_guests?: number;
 
   @Column({ nullable: true })
   property_size?: string;

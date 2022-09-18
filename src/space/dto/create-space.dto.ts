@@ -12,7 +12,7 @@ export class CreateSpaceDto {
   youtube_url?: string;
 
   @ApiProperty()
-  max_guests?: string;
+  max_guests?: number;
 
   @ApiProperty()
   property_size?: string;

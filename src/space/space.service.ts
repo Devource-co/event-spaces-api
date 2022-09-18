@@ -92,16 +92,18 @@ export class SpaceService {
         images,
       };
     }
+
     const isUpdateActivities = !!updateSpaceDto.activities?.length;
     if (isUpdateActivities) {
       const activities = updateSpaceDto.activities.map((activityId) => ({
         id: activityId,
       }));
       dataUpdate = {
-        activities,
         ...dataUpdate,
+        activities,
       };
     }
+    console.log(dataUpdate);
     await this.spacesRepository.save(dataUpdate);
     return await this.spacesRepository.findOne({
       where: {
