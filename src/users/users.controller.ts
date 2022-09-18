@@ -28,7 +28,6 @@ export class UsersController {
   @Get('get-profile')
   async getProfile(@Request() req) {
     const userId = req.user?.id;
-    console.log(req.user.validatePassword);
     const user = await this.usersService.findById(userId);
     delete user.password;
     return user;

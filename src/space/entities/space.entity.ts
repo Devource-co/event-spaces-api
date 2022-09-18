@@ -14,8 +14,8 @@ import {
 } from 'typeorm';
 import { Activity } from '../../activities/entities/activities.entity';
 import { Address } from '../../address/entities/address.entity';
-import { SpaceType } from './spaceType.entity';
 import { User } from '../../users/entities/user.entity';
+import { SpaceType } from '../../spacetypes/entities/spacetype.entity';
 
 @Entity()
 export class Space extends BaseEntity {
