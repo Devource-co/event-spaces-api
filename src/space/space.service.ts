@@ -53,6 +53,9 @@ export class SpaceService {
         images: true,
         address: true,
         activities: true,
+        amenities: true,
+        accessMethods: true,
+        rules: true,
       },
     });
   }
@@ -103,6 +106,28 @@ export class SpaceService {
         activities,
       };
     }
+    const isUpdateAmenities = !!updateSpaceDto.amenities?.length;
+    if (isUpdateAmenities) {
+      const amenities = updateSpaceDto.amenities.map((amenityId) => ({
+        id: amenityId,
+      }));
+      dataUpdate = {
+        ...dataUpdate,
+        amenities,
+      };
+    }
+    const isUpdateAcessMethods = !!updateSpaceDto.accessMethods?.length;
+    if (isUpdateAcessMethods) {
+      const accessMethods = updateSpaceDto.accessMethods.map(
+        (accessMethodId) => ({
+          id: accessMethodId,
+        }),
+      );
+      dataUpdate = {
+        ...dataUpdate,
+        accessMethods,
+      };
+    }
     console.log(dataUpdate);
     await this.spacesRepository.save(dataUpdate);
     return await this.spacesRepository.findOne({
@@ -113,6 +138,9 @@ export class SpaceService {
         images: true,
         address: true,
         activities: true,
+        amenities: true,
+        accessMethods: true,
+        rules: true,
       },
     });
   }

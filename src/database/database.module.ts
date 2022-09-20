@@ -11,8 +11,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         type: 'postgres',
         url: configService.get('databaseUrl'),
         logger: 'file',
-        entities: ['dist/**/*.entity.js'],
-        migrations: ['dist/src/db/migrations/*js'],
+        entities: ['build/**/*.entity.js'],
+        migrations: ['build/src/db/migrations/*js'],
         autoLoadEntities: true,
         logging: true,
         cli: {

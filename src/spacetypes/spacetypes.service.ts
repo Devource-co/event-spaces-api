@@ -25,8 +25,9 @@ export class SpacetypesService {
     return this.spaceTypeRepository.findOneBy({ id });
   }
 
-  update(id: string, updateSpacetypeDto: UpdateSpacetypeDto) {
-    return this.spaceTypeRepository.update({ id }, updateSpacetypeDto);
+  async update(id: string, updateSpacetypeDto: UpdateSpacetypeDto) {
+    await this.spaceTypeRepository.update({ id }, updateSpacetypeDto);
+    return this.findOne(id);
   }
 
   remove(id: string) {

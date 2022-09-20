@@ -16,6 +16,9 @@ import { BlogModule } from './blog/blog.module';
 import { AddressModule } from './address/address.module';
 import { FilesModule } from './files/files.module';
 import { SpacetypesModule } from './spacetypes/spacetypes.module';
+import { AmenitiesModule } from './amenities/amenities.module';
+import { AccessMethodsModule } from './access-methods/access-methods.module';
+import { SpaceRulesModule } from './space-rules/space-rules.module';
 
 @Module({
   imports: [
@@ -37,6 +40,9 @@ import { SpacetypesModule } from './spacetypes/spacetypes.module';
     AddressModule,
     FilesModule,
     SpacetypesModule,
+    AmenitiesModule,
+    AccessMethodsModule,
+    SpaceRulesModule,
   ],
   controllers: [AppController],
   providers: [],
