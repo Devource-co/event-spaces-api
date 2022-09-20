@@ -3,28 +3,30 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Space } from '../../space/entities/space.entity';
 
 @Entity()
-export class SpaceType extends BaseEntity {
+export class SpaceRule extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: false })
-  name: string;
+  title: string;
 
-  @Column({ nullable: true })
-  description?: string;
+  @Column({ nullable: false })
+  space_id: string;
 
-  @Column({ nullable: true })
-  cover_image?: string;
+  @Column({ default: false })
+  active: boolean;
 
-  @OneToMany(() => Space, (space) => space.type)
-  photos: Space[];
+  @ManyToOne(() => Space, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'space_id' })
+  space: Space;
 
   @Column()
   @CreateDateColumn()

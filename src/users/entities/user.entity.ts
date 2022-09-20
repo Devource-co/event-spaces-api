@@ -7,12 +7,14 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Industry } from './industry.entity';
 import { Role } from '../../auth/role.enum';
+import { Space } from '../../space/entities/space.entity';
 
 @Entity()
 @Index(['id', 'email'])
@@ -75,6 +77,9 @@ export class User extends BaseEntity {
 
   @Column({ default: false })
   allowNotifications?: boolean;
+
+  @OneToMany(() => Space, (space) => space.owner)
+  space: Space[];
 
   @Column()
   @CreateDateColumn()

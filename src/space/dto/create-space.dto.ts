@@ -55,4 +55,10 @@ export class CreateSpaceDto {
 
   @ApiProperty()
   address?: CreateAddressDto;
+
+  @ApiProperty()
+  amenities: any[];
+
+  @ApiProperty()
+  accessMethods: any[];
 }

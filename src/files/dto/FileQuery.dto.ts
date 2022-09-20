@@ -2,6 +2,6 @@ import { IsIn, IsOptional } from 'class-validator';
 
 export class FileQueryDTO {
   @IsOptional()
-  @IsIn(['space', 'profile-pic', 'blog'])
+  @IsIn(['space', 'profile-pic', 'blog', 'amenity'])
   folder?: string;
 }

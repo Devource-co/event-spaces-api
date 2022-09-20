@@ -3,17 +3,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToMany,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Space } from '../../space/entities/space.entity';
-import { CategoryActivity } from './categoryActivities.entity';
 
 @Entity()
-export class Activity extends BaseEntity {
+export class AccessMethod extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -22,19 +19,6 @@ export class Activity extends BaseEntity {
 
   @Column({ nullable: true })
   description?: string;
-
-  @Column({ nullable: true })
-  category_id?: string;
-
-  @Column({ nullable: true })
-  tags: string;
-
-  @Column({ nullable: true })
-  image_url?: string;
-
-  @ManyToOne(() => CategoryActivity, { cascade: true })
-  @JoinColumn({ name: 'category_id' })
-  type: CategoryActivity;
 
   @ManyToMany(() => Space, (space) => space.activities)
   spaces: Space[];
