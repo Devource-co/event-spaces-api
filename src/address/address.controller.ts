@@ -7,12 +7,9 @@ import {
   Param,
   Delete,
   Query,
-  ParseIntPipe,
-  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { TransformInterceptor } from '../utils/transform.interceptor';
 import { AddressService } from './address.service';
 import { AddressRangeQueryDTO } from './dto/address-query';
 import { CreateAddressDto } from './dto/create-address.dto';
@@ -26,19 +23,16 @@ export class AddressController {
   constructor(private readonly addressService: AddressService) {}
 
   @Post('create')
-  @UseInterceptors(TransformInterceptor)
   create(@Body() createAddressDto: CreateAddressDto) {
     return this.addressService.create(createAddressDto);
   }
 
   @Get()
-  @UseInterceptors(TransformInterceptor)
   findAll() {
     return this.addressService.findAll();
   }
 
   @Get('range')
-  @UseInterceptors(TransformInterceptor)
   @UsePipes(new ValidationPipe({ transform: true }))
   getRange(@Query() query: AddressRangeQueryDTO) {
     const { lat, long, range } = query;
@@ -51,7 +45,6 @@ export class AddressController {
   }
 
   @Patch(':id')
-  @UseInterceptors(TransformInterceptor)
   update(@Param('id') id: string, @Body() updateAddressDto: UpdateAddressDto) {
     return this.addressService.update(id, updateAddressDto);
   }

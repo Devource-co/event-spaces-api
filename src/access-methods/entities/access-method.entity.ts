@@ -1,13 +1,16 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Space } from '../../space/entities/space.entity';
 
 @Entity()
-export class SpaceType {
+export class AccessMethod extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -16,6 +19,9 @@ export class SpaceType {
 
   @Column({ nullable: true })
   description?: string;
+
+  @ManyToMany(() => Space, (space) => space.activities)
+  spaces: Space[];
 
   @Column()
   @CreateDateColumn()

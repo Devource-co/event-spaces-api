@@ -8,14 +8,18 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Activity } from '../../activities/entities/activities.entity';
 import { Address } from '../../address/entities/address.entity';
-import { SpaceType } from './spaceType.entity';
 import { User } from '../../users/entities/user.entity';
+import { SpaceType } from '../../spacetypes/entities/spacetype.entity';
+import { Amenity } from '../../amenities/entities/amenity.entity';
+import { AccessMethod } from '../../access-methods/entities/access-method.entity';
+import { SpaceRule } from '../../space-rules/entities/space-rule.entity';
 
 @Entity()
 export class Space extends BaseEntity {
@@ -42,12 +46,12 @@ export class Space extends BaseEntity {
   @JoinTable()
   activities?: Activity[];
 
-  @Column({ nullable: true })
-  owner_id?: string;
+  @Column({ nullable: false })
+  owner_id: string;
 
   @ManyToOne(() => User, { cascade: true })
   @JoinColumn({ name: 'owner_id' })
-  user?: User;
+  owner?: User;
 
   @Column({ nullable: true })
   type_id?: string;
@@ -57,7 +61,7 @@ export class Space extends BaseEntity {
   type?: SpaceType;
 
   @Column({ nullable: true })
-  max_guests?: string;
+  max_guests?: number;
 
   @Column({ nullable: true })
   property_size?: string;
@@ -90,6 +94,17 @@ export class Space extends BaseEntity {
   @OneToOne(() => File)
   @JoinColumn({ name: 'thumbnail_id' })
   thumbNail?: File;
+
+  @ManyToMany(() => Amenity, (amenity) => amenity.id, { cascade: true })
+  @JoinTable()
+  amenities?: Amenity[];
+
+  @ManyToMany(() => AccessMethod, (method) => method.id, { cascade: true })
+  @JoinTable()
+  accessMethods?: AccessMethod[];
+
+  @OneToMany(() => SpaceRule, (rule) => rule.space)
+  rules?: SpaceRule[];
 
   @Column()
   @CreateDateColumn()

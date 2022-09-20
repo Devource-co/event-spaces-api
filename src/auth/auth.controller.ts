@@ -6,14 +6,12 @@ import {
   Post,
   Request,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { AuthLoginDto } from './dto/auth-login.dto';
 
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { SocialLoginDto } from './dto/socials-login.dto';
-import { TransformInterceptor } from '../utils/transform.interceptor';
 
 @Controller({
   version: '1',
@@ -24,7 +22,6 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(200)
-  @UseInterceptors(TransformInterceptor)
   async login(@Body() authLoginDto: AuthLoginDto, @Request() req) {
     const ip =
       req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
@@ -34,7 +31,6 @@ export class AuthController {
 
   @Post('login-facebook')
   @HttpCode(200)
-  @UseInterceptors(TransformInterceptor)
   async loginWithFacebook(@Body() socialLoginDto: SocialLoginDto) {
     console.log(socialLoginDto);
     const socialUser = await this.authService.validateFacebook(socialLoginDto);
@@ -47,7 +43,6 @@ export class AuthController {
 
   @Post('login-google')
   @HttpCode(200)
-  @UseInterceptors(TransformInterceptor)
   async loginWithGoogle(@Body() socialLoginDto: SocialLoginDto) {
     const socialUser = await this.authService.validateGoogle(socialLoginDto);
     return this.authService.loginSocial({
@@ -60,7 +55,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get()
   @HttpCode(200)
-  @UseInterceptors(TransformInterceptor)
   async test(@Request() req) {
     console.log('----->', req.user);
     return { message: 'Success!' };

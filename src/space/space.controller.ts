@@ -11,15 +11,16 @@ import {
   ParseIntPipe,
   ParseBoolPipe,
   HttpCode,
-  UseInterceptors,
   ParseArrayPipe,
   HttpStatus,
   HttpException,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { SpaceService } from './space.service';
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
-import { TransformInterceptor } from '../utils/transform.interceptor';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller({
   version: '1',
@@ -30,14 +31,14 @@ export class SpaceController {
 
   @Post()
   @HttpCode(201)
-  @UseInterceptors(TransformInterceptor)
-  create(@Body() createSpaceDto: CreateSpaceDto) {
-    return this.spaceService.create(createSpaceDto);
+  @UseGuards(JwtAuthGuard)
+  create(@Body() createSpaceDto: CreateSpaceDto, @Request() req) {
+    const userId = req.user?.id;
+    return this.spaceService.create(createSpaceDto, userId);
   }
 
   @Get()
   @HttpCode(200)
-  @UseInterceptors(TransformInterceptor)
   async findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
@@ -76,9 +77,15 @@ export class SpaceController {
     return space;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSpaceDto: UpdateSpaceDto) {
-    return this.spaceService.update(id, updateSpaceDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateSpaceDto: UpdateSpaceDto,
+    @Request() req,
+  ) {
+    const userId = req.user?.id;
+    return this.spaceService.update(id, updateSpaceDto, userId);
   }
 
   @Delete(':id')
