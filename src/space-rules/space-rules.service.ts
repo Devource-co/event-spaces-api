@@ -50,10 +50,6 @@ export class SpaceRulesService {
     );
   }
 
-  bulkUpdateStatus(ids: string[], updateSpaceRuleDto: UpdateSpaceRuleDto[]) {
-    
-  }
-
   remove(id: string) {
     return this.spaceRuleRepository.delete({ id });
   }
