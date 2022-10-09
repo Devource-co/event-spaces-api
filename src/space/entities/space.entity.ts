@@ -20,6 +20,8 @@ import { SpaceType } from '../../spacetypes/entities/spacetype.entity';
 import { Amenity } from '../../amenities/entities/amenity.entity';
 import { AccessMethod } from '../../access-methods/entities/access-method.entity';
 import { SpaceRule } from '../../space-rules/entities/space-rule.entity';
+import { SpaceImage } from '../../space-images/entities/space-image.entity';
+import { SpaceSchedule } from '../../space-schedule/entities/space-schedule.entity';
 
 @Entity()
 export class Space extends BaseEntity {
@@ -84,16 +86,14 @@ export class Space extends BaseEntity {
   @Column({ default: false })
   publish?: boolean;
 
-  @ManyToMany(() => File, (file) => file.id, { cascade: true })
-  @JoinTable()
-  images?: File[];
+  @OneToMany(() => SpaceImage, (image) => image.space)
+  images?: SpaceImage[];
+
+  @OneToMany(() => SpaceSchedule, (day) => day.space)
+  schedule?: SpaceSchedule[];
 
   @Column({ nullable: true })
-  thumbnail_id?: string;
-
-  @OneToOne(() => File)
-  @JoinColumn({ name: 'thumbnail_id' })
-  thumbNail?: File;
+  thumbnail_url?: string;
 
   @ManyToMany(() => Amenity, (amenity) => amenity.id, { cascade: true })
   @JoinTable()

@@ -62,6 +62,32 @@ export class SpaceController {
     );
   }
 
+  @Get('/owner')
+  @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
+  async findAllByUserId(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query(
+      'relations',
+      new DefaultValuePipe(''),
+      new ParseArrayPipe({ items: String, separator: ',' }),
+    )
+    relations = [],
+    @Request() req,
+  ) {
+    const userId = req.user?.id;
+    return this.spaceService.findAllByUser(
+      {
+        page,
+        limit,
+        route: 'api/v1/space',
+      },
+      relations,
+      userId,
+    );
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const space = await this.spaceService.findOne(id);

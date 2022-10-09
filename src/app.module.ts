@@ -19,6 +19,8 @@ import { SpacetypesModule } from './spacetypes/spacetypes.module';
 import { AmenitiesModule } from './amenities/amenities.module';
 import { AccessMethodsModule } from './access-methods/access-methods.module';
 import { SpaceRulesModule } from './space-rules/space-rules.module';
+import { SpaceImagesModule } from './space-images/space-images.module';
+import { SpaceScheduleModule } from './space-schedule/space-schedule.module';
 
 @Module({
   imports: [
@@ -43,6 +45,8 @@ import { SpaceRulesModule } from './space-rules/space-rules.module';
     AmenitiesModule,
     AccessMethodsModule,
     SpaceRulesModule,
+    SpaceImagesModule,
+    SpaceScheduleModule,
   ],
   controllers: [AppController],
   providers: [],

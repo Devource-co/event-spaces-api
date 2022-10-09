@@ -48,7 +48,7 @@ export class CreateSpaceDto {
   publish?: boolean;
 
   @ApiProperty()
-  thumbnail_id?: string;
+  thumbnail_url?: string;
 
   @ApiProperty()
   images?: any[];
