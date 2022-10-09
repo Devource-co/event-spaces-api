@@ -7,9 +7,12 @@ import {
   Query,
   Req,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { v4 as uuidv4 } from 'uuid';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 import { FileQueryDTO } from './dto/FileQuery.dto';
 import { FilesService } from './files.service';
 
@@ -39,6 +42,27 @@ export class FilesController {
       url,
       query.folder as string,
     );
+  }
+
+  @Post('bulk-upload')
+  @UseInterceptors(
+    FilesInterceptor('files', null, {
+      storage: diskStorage({
+        destination: './static/files/space',
+        filename(req, file, callback) {
+          const fileNameSplit = file.originalname.split('.');
+          const fileExt = fileNameSplit[fileNameSplit.length - 1];
+          callback(null, `${uuidv4()}.${fileExt}`);
+        },
+      }),
+    }),
+  )
+  async bulkUploadFile(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Req() req: any,
+  ) {
+    const url = `${req.protocol}://${req.get('Host')}`;
+    return this.filesService.bulkFileUpload(files, url);
   }
 
   @Delete(':id')
