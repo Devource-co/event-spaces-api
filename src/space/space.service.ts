@@ -9,18 +9,12 @@ import {
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
 import { Space } from './entities/space.entity';
-import { FilesService } from '../files/files.service';
-import { AddressService } from '../address/address.service';
-import { ActivityService } from '../activities/activities.service';
 
 @Injectable()
 export class SpaceService {
   constructor(
     @InjectRepository(Space)
     private spacesRepository: Repository<Space>,
-    private fileService: FilesService,
-    private addressService: AddressService,
-    private activitiesService: ActivityService,
   ) {}
   async create(createSpaceDto: CreateSpaceDto, userId: string) {
     const space = this.spacesRepository.create({
@@ -44,6 +38,17 @@ export class SpaceService {
     });
   }
 
+  async findAllByUser(
+    options: IPaginationOptions,
+    relations: string[] = [],
+    userId: string,
+  ): Promise<Pagination<Space>> {
+    return paginate<Space>(this.spacesRepository, options, {
+      relations,
+      where: { owner_id: userId },
+    });
+  }
+
   async findOne(id: string) {
     return this.spacesRepository.findOne({
       where: {
@@ -56,6 +61,7 @@ export class SpaceService {
         amenities: true,
         accessMethods: true,
         rules: true,
+        schedule: true,
       },
     });
   }
@@ -83,18 +89,6 @@ export class SpaceService {
       ...space,
       ...updateSpaceDto,
     };
-    const isUpdateImages = !!updateSpaceDto.images?.length;
-    if (isUpdateImages) {
-      const newImages = updateSpaceDto.images.map((imageId) => ({
-        id: imageId,
-      }));
-      const images = [...space.images, ...newImages];
-
-      dataUpdate = {
-        ...dataUpdate,
-        images,
-      };
-    }
 
     const isUpdateActivities = !!updateSpaceDto.activities?.length;
     if (isUpdateActivities) {
@@ -128,7 +122,6 @@ export class SpaceService {
         accessMethods,
       };
     }
-    console.log(dataUpdate);
     await this.spacesRepository.save(dataUpdate);
     return await this.spacesRepository.findOne({
       where: {
@@ -141,6 +134,7 @@ export class SpaceService {
         amenities: true,
         accessMethods: true,
         rules: true,
+        schedule: true,
       },
     });
   }

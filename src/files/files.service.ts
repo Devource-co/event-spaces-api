@@ -40,6 +40,18 @@ export class FilesService {
     }
   }
 
+  async bulkFileUpload(files: Array<Express.Multer.File>, url: string) {
+    console.log(files);
+    const spaceImages = files.map((file) => ({
+      url: `${url}/files/space/${file.filename}`,
+      type: file.mimetype,
+      model: 'space',
+    }));
+    const filesEntities = this.filesRepository.create(spaceImages);
+    await this.filesRepository.insert(filesEntities);
+    return filesEntities;
+  }
+
   async findOne(id: string) {
     return this.filesRepository.findOneBy({ id });
   }
