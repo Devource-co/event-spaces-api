@@ -21,6 +21,9 @@ import { AccessMethodsModule } from './access-methods/access-methods.module';
 import { SpaceRulesModule } from './space-rules/space-rules.module';
 import { SpaceImagesModule } from './space-images/space-images.module';
 import { SpaceScheduleModule } from './space-schedule/space-schedule.module';
+import { RateModule } from './rate/rate.module';
+import { CancellationPolicyModule } from './cancellation-policy/cancellation-policy.module';
+import { FaqsModule } from './faqs/faqs.module';
 
 @Module({
   imports: [
@@ -47,6 +50,9 @@ import { SpaceScheduleModule } from './space-schedule/space-schedule.module';
     SpaceRulesModule,
     SpaceImagesModule,
     SpaceScheduleModule,
+    RateModule,
+    CancellationPolicyModule,
+    FaqsModule,
   ],
   controllers: [AppController],
   providers: [],

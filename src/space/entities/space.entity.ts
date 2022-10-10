@@ -22,6 +22,9 @@ import { AccessMethod } from '../../access-methods/entities/access-method.entity
 import { SpaceRule } from '../../space-rules/entities/space-rule.entity';
 import { SpaceImage } from '../../space-images/entities/space-image.entity';
 import { SpaceSchedule } from '../../space-schedule/entities/space-schedule.entity';
+import { CancellationPolicy } from '../../cancellation-policy/entities/cancellation-policy.entity';
+import { Rate } from '../../rate/entities/rate.entity';
+import { Faq } from '../../faqs/entities/faq.entity';
 
 @Entity()
 export class Space extends BaseEntity {
@@ -40,9 +43,23 @@ export class Space extends BaseEntity {
   @Column({ nullable: true })
   address_id?: string;
 
-  @OneToOne(() => Address, { onDelete: 'SET NULL' })
+  @OneToOne(() => Address, { cascade: true })
   @JoinColumn({ name: 'address_id' })
   address: Address;
+
+  @Column({ nullable: true })
+  cancellation_policy_id?: string;
+
+  @ManyToOne(() => CancellationPolicy, { cascade: true })
+  @JoinColumn({ name: 'cancellation_policy_id' })
+  cancellation_policy: CancellationPolicy;
+
+  @Column({ nullable: true })
+  rate_id?: string;
+
+  @OneToOne(() => Rate, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'rate_id' })
+  rate: Rate;
 
   @ManyToMany(() => Activity, (activity) => activity.id, { cascade: true })
   @JoinTable()
@@ -64,6 +81,12 @@ export class Space extends BaseEntity {
 
   @Column({ nullable: true })
   max_guests?: number;
+
+  @Column({ nullable: true, type: 'decimal' })
+  price?: number;
+
+  @Column({ nullable: true })
+  minimumDuaration?: number;
 
   @Column({ nullable: true })
   property_size?: string;
@@ -91,6 +114,9 @@ export class Space extends BaseEntity {
 
   @OneToMany(() => SpaceSchedule, (day) => day.space)
   schedule?: SpaceSchedule[];
+
+  @OneToMany(() => Faq, (faq) => faq.space)
+  faqs?: Faq[];
 
   @Column({ nullable: true })
   thumbnail_url?: string;
