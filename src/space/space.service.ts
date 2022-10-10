@@ -62,6 +62,7 @@ export class SpaceService {
         accessMethods: true,
         rules: true,
         schedule: true,
+        faqs: true,
       },
     });
   }
@@ -135,6 +136,7 @@ export class SpaceService {
         accessMethods: true,
         rules: true,
         schedule: true,
+        faqs: true,
       },
     });
   }
