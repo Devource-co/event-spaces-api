@@ -22,4 +22,8 @@ export class CreateSpaceScheduleDto {
   @ValidateIf((o) => o.is_set_time === true)
   @IsNotEmpty()
   closing_time?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  id: string;
 }

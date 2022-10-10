@@ -61,4 +61,7 @@ export class CreateSpaceDto {
 
   @ApiProperty()
   accessMethods: any[];
+
+  @ApiProperty()
+  price: number;
 }
