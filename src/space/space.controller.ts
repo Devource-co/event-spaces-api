@@ -47,7 +47,7 @@ export class SpaceController {
     @Query(
       'relations',
       new DefaultValuePipe(''),
-      new ParseArrayPipe({ items: String, separator: ',' }),
+      new ParseArrayPipe({ items: String, separator: ',', optional: true }),
     )
     relations = [],
   ) {

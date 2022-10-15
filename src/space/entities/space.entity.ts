@@ -57,7 +57,7 @@ export class Space extends BaseEntity {
   @Column({ nullable: true })
   rate_id?: string;
 
-  @OneToOne(() => Rate, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Rate, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'rate_id' })
   rate: Rate;
 

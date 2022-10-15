@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Space } from '../../space/entities/space.entity';
 
 @Entity()
 export class Rate extends BaseEntity {
@@ -20,6 +22,9 @@ export class Rate extends BaseEntity {
 
   @Column({ nullable: false, type: 'text' })
   frequency: string;
+
+  @OneToMany(() => Space, (space) => space.rate)
+  space?: Space[];
 
   @Column()
   @CreateDateColumn()

@@ -3,9 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Space } from '../../space/entities/space.entity';
 
 @Entity()
 export class CancellationPolicy extends BaseEntity {
@@ -21,6 +23,9 @@ export class CancellationPolicy extends BaseEntity {
   // policy active before what hours
   @Column({ nullable: false, type: 'int' })
   hoursBeforeExpiry: number;
+
+  @OneToMany(() => Space, (space) => space.cancellation_policy)
+  space?: Space[];
 
   @Column()
   @CreateDateColumn()
