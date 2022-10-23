@@ -14,7 +14,7 @@ export class Amenity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   title: string;
 
   @Column({ nullable: true })
