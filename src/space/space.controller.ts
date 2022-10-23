@@ -51,6 +51,7 @@ export class SpaceController {
     )
     relations = [],
   ) {
+    console.log(relations);
     return this.spaceService.findAll(
       {
         page,

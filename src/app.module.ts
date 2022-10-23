@@ -24,6 +24,7 @@ import { SpaceScheduleModule } from './space-schedule/space-schedule.module';
 import { RateModule } from './rate/rate.module';
 import { CancellationPolicyModule } from './cancellation-policy/cancellation-policy.module';
 import { FaqsModule } from './faqs/faqs.module';
+import { BookingsModule } from './bookings/bookings.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { FaqsModule } from './faqs/faqs.module';
     RateModule,
     CancellationPolicyModule,
     FaqsModule,
+    BookingsModule,
   ],
   controllers: [AppController],
   providers: [],

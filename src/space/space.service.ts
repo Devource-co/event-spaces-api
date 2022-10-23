@@ -63,6 +63,7 @@ export class SpaceService {
         rules: true,
         schedule: true,
         faqs: true,
+        owner: true,
       },
     });
   }
