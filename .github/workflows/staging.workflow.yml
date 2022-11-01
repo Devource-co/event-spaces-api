@@ -3,6 +3,8 @@ name: staging
 on:
   push:
     branches: [ staging ]
+  pull_request:
+    branches: [ staging ]
   
 env:
   DOCKER_USER: ${{secrets.DOCKER_USER}}
@@ -94,7 +96,7 @@ jobs:
             --restart=always \
             --name api-staging \
             --env-file .env \
-            --network nginx-proxy-manager_default \
+            --network findyspaceservices \
             $DOCKER_USER/findy-api-staging:$GITHUB_SHA
             docker image prune -f
            
