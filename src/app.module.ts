@@ -21,10 +21,10 @@ import { AccessMethodsModule } from './access-methods/access-methods.module';
 import { SpaceRulesModule } from './space-rules/space-rules.module';
 import { SpaceImagesModule } from './space-images/space-images.module';
 import { SpaceScheduleModule } from './space-schedule/space-schedule.module';
-import { RateModule } from './rate/rate.module';
 import { CancellationPolicyModule } from './cancellation-policy/cancellation-policy.module';
 import { FaqsModule } from './faqs/faqs.module';
 import { BookingsModule } from './bookings/bookings.module';
+import { BookedDatesModule } from './booked-dates/booked-dates.module';
 
 @Module({
   imports: [
@@ -51,10 +51,10 @@ import { BookingsModule } from './bookings/bookings.module';
     SpaceRulesModule,
     SpaceImagesModule,
     SpaceScheduleModule,
-    RateModule,
     CancellationPolicyModule,
     FaqsModule,
     BookingsModule,
+    BookedDatesModule,
   ],
   controllers: [AppController],
   providers: [],

@@ -2,12 +2,15 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { BookedDate } from '../../booked-dates/entities/booked-date.entity';
 import { Space } from '../../space/entities/space.entity';
 import { User } from '../../users/entities/user.entity';
 
@@ -62,11 +65,14 @@ export class Booking extends BaseEntity {
   })
   booking_status?: BOOKING_STATUS;
 
-  @Column('uuid')
+  @Column({ type: 'uuid', nullable: true })
   payment_id: string;
 
   @Column('int')
   duration: number;
+
+  @OneToMany(() => BookedDate, (date) => date.booking)
+  dates?: BookedDate[];
 
   @Column()
   @CreateDateColumn()
@@ -75,4 +81,7 @@ export class Booking extends BaseEntity {
   @Column()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }

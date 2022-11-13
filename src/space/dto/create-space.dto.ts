@@ -64,4 +64,7 @@ export class CreateSpaceDto {
 
   @ApiProperty()
   price: number;
+
+  @ApiProperty()
+  minimumDuration: number;
 }
