@@ -143,6 +143,6 @@ export class SpaceService {
   }
 
   async remove(id: string) {
-    return this.spacesRepository.delete(id);
+    return this.spacesRepository.softDelete(id);
   }
 }
