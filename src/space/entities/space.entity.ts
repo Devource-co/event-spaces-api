@@ -1,8 +1,8 @@
-import { File } from '../../files/entities/files.entity';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
@@ -23,8 +23,16 @@ import { SpaceRule } from '../../space-rules/entities/space-rule.entity';
 import { SpaceImage } from '../../space-images/entities/space-image.entity';
 import { SpaceSchedule } from '../../space-schedule/entities/space-schedule.entity';
 import { CancellationPolicy } from '../../cancellation-policy/entities/cancellation-policy.entity';
-import { Rate } from '../../rate/entities/rate.entity';
 import { Faq } from '../../faqs/entities/faq.entity';
+import { Booking } from '../../bookings/entities/booking.entity';
+
+export enum SPACE_STATUS {
+  REVIEW = 'in review',
+  DRAFT = 'draft',
+  ACTIVE = 'active',
+  REJECTED = 'rejected',
+  INACTIVE = 'inactive',
+}
 
 @Entity()
 export class Space extends BaseEntity {
@@ -54,13 +62,6 @@ export class Space extends BaseEntity {
   @JoinColumn({ name: 'cancellation_policy_id' })
   cancellation_policy: CancellationPolicy;
 
-  @Column({ nullable: true })
-  rate_id?: string;
-
-  @ManyToOne(() => Rate, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'rate_id' })
-  rate: Rate;
-
   @ManyToMany(() => Activity, (activity) => activity.id, { cascade: true })
   @JoinTable()
   activities?: Activity[];
@@ -86,7 +87,15 @@ export class Space extends BaseEntity {
   price?: number;
 
   @Column({ nullable: true })
-  minimumDuaration?: number;
+  minimumDuration?: number;
+
+  @Column({
+    nullable: false,
+    default: SPACE_STATUS.DRAFT,
+    type: 'enum',
+    enum: SPACE_STATUS,
+  })
+  status: SPACE_STATUS;
 
   @Column({ nullable: true })
   property_size?: string;
@@ -115,6 +124,9 @@ export class Space extends BaseEntity {
   @OneToMany(() => SpaceSchedule, (day) => day.space)
   schedule?: SpaceSchedule[];
 
+  @OneToMany(() => Booking, (booking) => booking.space)
+  bookings?: Booking[];
+
   @OneToMany(() => Faq, (faq) => faq.space)
   faqs?: Faq[];
 
@@ -139,4 +151,7 @@ export class Space extends BaseEntity {
   @Column()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt?: Date;
 }
