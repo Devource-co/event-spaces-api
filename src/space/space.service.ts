@@ -65,6 +65,7 @@ export class SpaceService {
         faqs: true,
         owner: true,
       },
+      relationLoadStrategy: 'query',
     });
   }
 

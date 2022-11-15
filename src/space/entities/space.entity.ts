@@ -58,7 +58,10 @@ export class Space extends BaseEntity {
   @Column({ nullable: true })
   cancellation_policy_id?: string;
 
-  @ManyToOne(() => CancellationPolicy, { cascade: true })
+  @ManyToOne(
+    () => CancellationPolicy,
+    (cancellationPolicy) => cancellationPolicy.space,
+  )
   @JoinColumn({ name: 'cancellation_policy_id' })
   cancellation_policy: CancellationPolicy;
 
@@ -69,14 +72,14 @@ export class Space extends BaseEntity {
   @Column({ nullable: false })
   owner_id: string;
 
-  @ManyToOne(() => User, { cascade: true })
+  @ManyToOne(() => User, (user) => user.space)
   @JoinColumn({ name: 'owner_id' })
   owner?: User;
 
   @Column({ nullable: true })
   type_id?: string;
 
-  @ManyToOne(() => SpaceType, { cascade: true })
+  @ManyToOne(() => SpaceType, (spaceType) => spaceType.space)
   @JoinColumn({ name: 'type_id' })
   type?: SpaceType;
 
@@ -118,13 +121,13 @@ export class Space extends BaseEntity {
   @Column({ default: false })
   publish?: boolean;
 
-  @OneToMany(() => SpaceImage, (image) => image.space)
+  @OneToMany(() => SpaceImage, (image) => image.space, { cascade: true })
   images?: SpaceImage[];
 
-  @OneToMany(() => SpaceSchedule, (day) => day.space)
+  @OneToMany(() => SpaceSchedule, (day) => day.space, { cascade: true })
   schedule?: SpaceSchedule[];
 
-  @OneToMany(() => Booking, (booking) => booking.space)
+  @OneToMany(() => Booking, (booking) => booking.space, { cascade: true })
   bookings?: Booking[];
 
   @OneToMany(() => Faq, (faq) => faq.space)
@@ -133,15 +136,15 @@ export class Space extends BaseEntity {
   @Column({ nullable: true })
   thumbnail_url?: string;
 
-  @ManyToMany(() => Amenity, (amenity) => amenity.id, { cascade: true })
+  @ManyToMany(() => Amenity, (amenity) => amenity.spaces, { cascade: true })
   @JoinTable()
   amenities?: Amenity[];
 
-  @ManyToMany(() => AccessMethod, (method) => method.id, { cascade: true })
+  @ManyToMany(() => AccessMethod, (method) => method.spaces, { cascade: true })
   @JoinTable()
   accessMethods?: AccessMethod[];
 
-  @OneToMany(() => SpaceRule, (rule) => rule.space)
+  @OneToMany(() => SpaceRule, (rule) => rule.space, { cascade: true })
   rules?: SpaceRule[];
 
   @Column()
