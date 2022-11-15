@@ -78,7 +78,7 @@ export class User extends BaseEntity {
   @Column({ default: false })
   allowNotifications?: boolean;
 
-  @OneToMany(() => Space, (space) => space.owner)
+  @OneToMany(() => Space, (space) => space.owner, { cascade: true })
   space: Space[];
 
   @Column()

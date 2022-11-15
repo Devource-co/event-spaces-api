@@ -37,14 +37,14 @@ export class Booking extends BaseEntity {
   @Column('uuid')
   user_id: string;
 
-  @ManyToOne(() => User, { cascade: true })
+  @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
   @Column('uuid')
   space_id: string;
 
-  @ManyToOne(() => Space, { cascade: true })
+  @ManyToOne(() => Space, (space) => space.bookings, { cascade: false })
   @JoinColumn({ name: 'space_id', referencedColumnName: 'id' })
   space: Space;
 
@@ -71,7 +71,7 @@ export class Booking extends BaseEntity {
   @Column('int')
   duration: number;
 
-  @OneToMany(() => BookedDate, (date) => date.booking)
+  @OneToMany(() => BookedDate, (date) => date.booking, { cascade: true })
   dates?: BookedDate[];
 
   @Column()

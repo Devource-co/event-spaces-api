@@ -23,7 +23,7 @@ export class SpaceSchedule extends BaseEntity {
   @Column({ nullable: false })
   space_id: string;
 
-  @ManyToOne(() => Space, { cascade: true })
+  @ManyToOne(() => Space, (space) => space.schedule)
   @JoinColumn({ name: 'space_id' })
   space: Space;
 

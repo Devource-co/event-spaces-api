@@ -23,7 +23,7 @@ export class Amenity extends BaseEntity {
   @Column({ nullable: false })
   icon_url: string;
 
-  @ManyToMany(() => Space, (space) => space.activities)
+  @ManyToMany(() => Space, (space) => space.amenities)
   spaces: Space[];
 
   @Column()

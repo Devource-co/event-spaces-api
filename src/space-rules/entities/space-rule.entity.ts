@@ -24,7 +24,7 @@ export class SpaceRule extends BaseEntity {
   @Column({ default: false })
   active: boolean;
 
-  @ManyToOne(() => Space, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Space, (space) => space.rules)
   @JoinColumn({ name: 'space_id' })
   space: Space;
 

@@ -21,7 +21,7 @@ export class SpaceImage extends BaseEntity {
   @Column({ nullable: false })
   space_id: string;
 
-  @ManyToOne(() => Space, { cascade: true })
+  @ManyToOne(() => Space, (space) => space.images)
   @JoinColumn({ name: 'space_id' })
   space: Space;
 
