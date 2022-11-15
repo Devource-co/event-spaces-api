@@ -23,8 +23,8 @@ export class SpaceType extends BaseEntity {
   @Column({ nullable: true })
   cover_image?: string;
 
-  @OneToMany(() => Space, (space) => space.type)
-  photos: Space[];
+  @OneToMany(() => Space, (space) => space.type, { onDelete: 'SET NULL' })
+  space: Space[];
 
   @Column()
   @CreateDateColumn()

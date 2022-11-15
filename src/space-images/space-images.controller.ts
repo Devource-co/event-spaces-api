@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { SpaceImagesService } from './space-images.service';
 import { CreateSpaceImageDto } from './dto/create-space-image.dto';
@@ -24,8 +25,8 @@ export class SpaceImagesController {
   }
 
   @Get()
-  findAll() {
-    return this.spaceImagesService.findAll();
+  findAll(@Query('space-id') spaceId = '') {
+    return this.spaceImagesService.findAll(spaceId);
   }
 
   @Get(':id')

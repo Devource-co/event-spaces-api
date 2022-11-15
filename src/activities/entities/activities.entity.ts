@@ -32,7 +32,7 @@ export class Activity extends BaseEntity {
   @Column({ nullable: true })
   image_url?: string;
 
-  @ManyToOne(() => CategoryActivity, { cascade: true })
+  @ManyToOne(() => CategoryActivity)
   @JoinColumn({ name: 'category_id' })
   type: CategoryActivity;
 
