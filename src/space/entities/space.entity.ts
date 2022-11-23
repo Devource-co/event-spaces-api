@@ -65,7 +65,7 @@ export class Space extends BaseEntity {
   @JoinColumn({ name: 'cancellation_policy_id' })
   cancellation_policy: CancellationPolicy;
 
-  @ManyToMany(() => Activity, (activity) => activity.id, { cascade: true })
+  @ManyToMany(() => Activity, (activity) => activity.spaces, { cascade: true })
   @JoinTable()
   activities?: Activity[];
 
@@ -146,6 +146,9 @@ export class Space extends BaseEntity {
 
   @OneToMany(() => SpaceRule, (rule) => rule.space, { cascade: true })
   rules?: SpaceRule[];
+
+  @Column('tsvector', { select: false, default: '' })
+  document_with_weights: any;
 
   @Column()
   @CreateDateColumn()

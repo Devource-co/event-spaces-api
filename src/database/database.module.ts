@@ -19,6 +19,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           migrationsDir: 'src/db/migrations',
         },
         synchronize: false,
+        relationLoadStrategy: 'query',
       }),
     }),
   ],

@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -14,6 +15,7 @@ export class SpaceType extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Index({ unique: true })
   @Column({ nullable: false, unique: true })
   name: string;
 

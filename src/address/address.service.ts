@@ -53,17 +53,10 @@ export class AddressService {
     };
     const locations = await this.addressRepository
       .createQueryBuilder('t_test_location')
-      .select([
-        'country',
-        'street',
-        'town',
-        'place',
-        'id',
-        'ST_AsGeoJSON(location)::jsonb AS location',
-        't_test_location.d_lat AS lat',
-        't_test_location.d_long AS long',
-        'ST_Distance(location, ST_SetSRID(ST_GeomFromGeoJSON(:origin), ST_SRID(location)))/1000 AS distance',
-      ])
+      .addSelect(
+        'ST_Distance(location, ST_SetSRID(ST_GeomFromGeoJSON(:origin), ST_SRID(location)))/1000',
+        'distance',
+      )
       .where(
         'ST_DWithin(location, ST_SetSRID(ST_GeomFromGeoJSON(:origin), ST_SRID(location)) , :range)',
       )
@@ -72,7 +65,7 @@ export class AddressService {
         origin: JSON.stringify(origin),
         range: range * 1000,
       })
-      .getRawMany();
+      .getMany();
     return locations;
   }
 }

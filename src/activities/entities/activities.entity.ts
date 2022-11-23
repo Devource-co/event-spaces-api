@@ -3,7 +3,9 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -17,6 +19,7 @@ export class Activity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Index({ unique: true })
   @Column({ nullable: false, unique: true })
   name: string;
 

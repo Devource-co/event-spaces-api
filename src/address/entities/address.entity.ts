@@ -50,6 +50,9 @@ export class Address {
   })
   location: Point;
 
+  @Column({ select: false, nullable: true, insert: false, update: false })
+  distance?: number;
+
   @Column()
   @CreateDateColumn()
   createdAt: Date;

@@ -1,10 +1,13 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
   ParseArrayPipe,
+  ParseBoolPipe,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -35,13 +38,25 @@ export class ActivityController {
 
   @Get()
   async getAllActivities(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query('orderBySpaces', new DefaultValuePipe(false), ParseBoolPipe)
+    orderBySpaces = false,
     @Query(
       'category-ids',
       new ParseArrayPipe({ items: String, separator: ',', optional: true }),
     )
     ids: string[] = [],
   ) {
-    return this.activityService.findAll(ids);
+    return this.activityService.findAll(
+      {
+        page,
+        limit,
+        route: 'api/v1/space',
+      },
+      ids,
+      orderBySpaces,
+    );
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

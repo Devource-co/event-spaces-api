@@ -18,7 +18,7 @@ export class UsersService {
       await user.save();
 
       delete user.password;
-      return user;
+      return 'Success';
     } else {
       throw new HttpException(
         {
