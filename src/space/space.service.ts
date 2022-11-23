@@ -86,7 +86,10 @@ export class SpaceService {
     if (q) {
       const query = `${q.trim().replace(/ /g, ' & ')}:*`;
       qb.andWhere('spaces.document_with_weights @@ to_tsquery(:query)')
-        .addSelect('ts_rank(spaces.document_with_weights, to_tsquery(:query))', 'ranking')
+        .addSelect(
+          'ts_rank(spaces.document_with_weights, to_tsquery(:query))',
+          'ranking',
+        )
         .addOrderBy('ranking', 'DESC')
         .setParameter('query', query);
     }
