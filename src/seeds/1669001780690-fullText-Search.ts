@@ -21,5 +21,9 @@ CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
         `);
   }
 
-  public async down(): Promise<any> {}
+  public async down(queryRunner: QueryRunner): Promise<any> {
+    await queryRunner.query(`
+      DROP TRIGGER tsvectorupdate IF EXISTS ON space;
+    `);
+  }
 }
