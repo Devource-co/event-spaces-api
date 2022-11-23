@@ -9,7 +9,6 @@ import {
   Query,
   DefaultValuePipe,
   ParseIntPipe,
-  ParseBoolPipe,
   HttpCode,
   ParseArrayPipe,
   HttpStatus,
@@ -21,6 +20,7 @@ import { SpaceService } from './space.service';
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { SPACE_STATUS } from './entities/space.entity';
 
 @Controller({
   version: '1',
@@ -42,8 +42,8 @@ export class SpaceController {
   async findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
-    @Query('published', new DefaultValuePipe(true), ParseBoolPipe)
-    published = true,
+    @Query('status', new DefaultValuePipe(SPACE_STATUS.ACTIVE))
+    status: SPACE_STATUS | 'all' = SPACE_STATUS.ACTIVE,
     @Query(
       'relations',
       new DefaultValuePipe(''),
@@ -51,7 +51,7 @@ export class SpaceController {
     )
     relations = [],
   ) {
-    console.log(relations);
+    if (relations.length === 1 && !relations[0]) relations = [];
     return this.spaceService.findAll(
       {
         page,
@@ -59,14 +59,47 @@ export class SpaceController {
         route: 'api/v1/space',
       },
       relations,
-      published,
+      status,
     );
+  }
+
+  @Get('/search')
+  @HttpCode(200)
+  async searchSpace(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+    @Query('activity', new DefaultValuePipe('')) activity: string,
+    @Query('status', new DefaultValuePipe(SPACE_STATUS.ACTIVE))
+    status: SPACE_STATUS | 'all' = SPACE_STATUS.ACTIVE,
+    @Query(
+      'coords',
+      new DefaultValuePipe(''),
+      new ParseArrayPipe({ items: String, separator: ',', optional: true }),
+    )
+    coords: [string, string],
+    @Query('type-space', new DefaultValuePipe('')) typeSpace: string,
+    @Query('range', new DefaultValuePipe(100), ParseIntPipe) distance: number,
+    @Query('q', new DefaultValuePipe('')) q: string,
+  ) {
+    return this.spaceService.searchSpace({
+      options: {
+        page,
+        limit,
+        route: 'api/v1/space',
+      },
+      q,
+      activity,
+      typeSpace,
+      status,
+      coords,
+      distance,
+    });
   }
 
   @Get('/owner')
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
-  async findAllByUserId(
+  async findAllByOwner(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
     @Query(

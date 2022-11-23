@@ -25,6 +25,7 @@ import { CancellationPolicyModule } from './cancellation-policy/cancellation-pol
 import { FaqsModule } from './faqs/faqs.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { BookedDatesModule } from './booked-dates/booked-dates.module';
+// import './database/database-polyfill';
 
 @Module({
   imports: [

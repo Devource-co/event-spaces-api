@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
+import { Repository } from 'typeorm';
 import { CreateActivityDto } from './dto/createActivity';
 import { CreateCategoryDto } from './dto/createCategory';
 import UpdateActivityDto from './dto/updateActivityDto';
@@ -17,12 +18,28 @@ export class ActivityService {
     private categoryRepository: Repository<CategoryActivity>,
   ) {}
 
-  async findAll(categoryIds?: string[]) {
-    return this.activityRepository.find({
-      ...(categoryIds?.length > 0 && {
-        where: { category_id: In(categoryIds) },
-      }),
-    });
+  async findAll(
+    options: IPaginationOptions,
+    categoryIds?: string[],
+    orderBySpaces?: boolean,
+  ) {
+    const filterWithCategories: [any, any] =
+      categoryIds.length > 0
+        ? ['activity.category_id IN(:...ids)', { ids: categoryIds }]
+        : ['', ''];
+    const qb = this.activityRepository
+      .createQueryBuilder('activity')
+      .where(...filterWithCategories)
+      .loadRelationCountAndMap(
+        'activity.spaceCount',
+        'activity.spaces',
+        'spaces',
+      );
+    const results = await paginate<Activity>(qb, options);
+    if (orderBySpaces) {
+      results.items.sort((a: any, b: any) => b.spaceCount - a.spaceCount);
+    }
+    return results;
   }
 
   async findOne(id: string) {
