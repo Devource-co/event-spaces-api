@@ -3,9 +3,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from '../../users/entities/user.entity';
+import { Message } from './messages.entity';
 
 @Entity()
 export class Conversation extends BaseEntity {
@@ -15,8 +21,21 @@ export class Conversation extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   title: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   description?: string;
+
+  @ManyToMany(() => User, (user) => user.conversations)
+  users: User[];
+
+  @OneToMany(() => Message, (message) => message.conversation)
+  messages: Message[];
+
+  @Column({ type: 'uuid', nullable: true })
+  last_message_id: string;
+
+  @OneToOne(() => Message, (message) => message.last_conversation)
+  @JoinColumn({ name: 'last_message_id', referencedColumnName: 'id' })
+  last_message: Message;
 
   @Column()
   @CreateDateColumn()

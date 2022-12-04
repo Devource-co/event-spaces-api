@@ -46,6 +46,11 @@ export class BookedDatesController {
     return this.bookedDatesService.findOne(id);
   }
 
+  @Get('/space/:id')
+  findSpaceAll(@Param('id') id: string) {
+    return this.bookedDatesService.findBookedSpaceDate(id);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

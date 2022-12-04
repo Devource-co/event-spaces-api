@@ -108,6 +108,8 @@ export class SpaceController {
       new ParseArrayPipe({ items: String, separator: ',' }),
     )
     relations = [],
+    @Query('status', new DefaultValuePipe(SPACE_STATUS.ACTIVE))
+    status: SPACE_STATUS | 'all' = SPACE_STATUS.ACTIVE,
     @Request() req,
   ) {
     const userId = req.user?.id;
@@ -119,6 +121,7 @@ export class SpaceController {
       },
       relations,
       userId,
+      status,
     );
   }
 

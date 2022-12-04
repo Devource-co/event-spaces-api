@@ -6,6 +6,8 @@ import {
   Entity,
   Index,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -15,6 +17,9 @@ import * as bcrypt from 'bcryptjs';
 import { Industry } from './industry.entity';
 import { Role } from '../../auth/role.enum';
 import { Space } from '../../space/entities/space.entity';
+import { Message } from '../../chat/entities/messages.entity';
+import { Conversation } from '../../chat/entities/conversation.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 @Index(['id', 'email'])
@@ -25,6 +30,7 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
+  @Exclude()
   @Column({ nullable: true })
   password?: string;
 
@@ -80,6 +86,13 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Space, (space) => space.owner, { cascade: true })
   space: Space[];
+
+  @OneToMany(() => Message, (message) => message.user, { cascade: true })
+  messages: Message[];
+
+  @ManyToMany(() => Conversation, conversation => conversation.users)
+  @JoinTable()
+  conversations: Conversation[];
 
   @Column()
   @CreateDateColumn()
