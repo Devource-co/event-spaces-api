@@ -39,10 +39,12 @@ export class ChatGateway
   }
 
   @SubscribeMessage('join_conversation')
-  async joinRoom(){}
+  async joinRoom() {
+    console.log('joined room');
+  }
 
   @SubscribeMessage('typing')
   async typing() {
-    
+    console.log('typing');
   }
 }

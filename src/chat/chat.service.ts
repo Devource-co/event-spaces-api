@@ -33,9 +33,9 @@ export class ChatService {
 
   async findMessages(id: string) {
     return this.messageRepository.find({
-      where : { conversation: { id } },
-      order: {createdAt:'DESC'}
-    })
+      where: { conversation: { id } },
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async getConversations(userId: string) {
@@ -44,14 +44,18 @@ export class ChatService {
       where: {
         users: {
           id: userId,
-        }
+        },
       },
-    })
+    });
   }
 
-  async createMessage(id: string, userId: string, createMessageDto: CreateMessageDto) {
+  async createMessage(
+    id: string,
+    userId: string,
+    createMessageDto: CreateMessageDto,
+  ) {
     const message = this.messageRepository.create({
-     conversation_id: id,
+      conversation_id: id,
       user_id: userId,
       ...createMessageDto,
     });

@@ -1,4 +1,3 @@
- 
 import {
   Controller,
   Get,
@@ -27,7 +26,7 @@ import { CreateMessageDto } from './dto/create-message.dto';
 })
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
-  
+
   @Get()
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
@@ -40,13 +39,17 @@ export class ChatController {
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   getMessages(@Param('id') id: string) {
-    return this.chatService.findMessages(id)
+    return this.chatService.findMessages(id);
   }
 
   @Post(':id')
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
-  createMessage(@Param('id') id: string, @Request() req, @Body() createMessageDto: CreateMessageDto) {
+  createMessage(
+    @Param('id') id: string,
+    @Request() req,
+    @Body() createMessageDto: CreateMessageDto,
+  ) {
     const userId = req.user.id;
     return this.chatService.createMessage(id, userId, createMessageDto);
   }
