@@ -90,7 +90,7 @@ export class User extends BaseEntity {
   @OneToMany(() => Message, (message) => message.user, { cascade: true })
   messages: Message[];
 
-  @ManyToMany(() => Conversation, conversation => conversation.users)
+  @ManyToMany(() => Conversation, (conversation) => conversation.users)
   @JoinTable()
   conversations: Conversation[];
 

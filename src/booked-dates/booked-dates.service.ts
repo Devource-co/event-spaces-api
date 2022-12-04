@@ -22,16 +22,19 @@ export class BookedDatesService {
     bookedDate.save();
     return bookedDate;
   }
-  
+
   async findBookedSpaceDate(spaceId: string) {
-    const now = dayjs().subtract(1, 'd').tz('Africa/Nairobi').format('YYYY-MM-DD HH:mm:ss');
+    const now = dayjs()
+      .subtract(1, 'd')
+      .tz('Africa/Nairobi')
+      .format('YYYY-MM-DD HH:mm:ss');
     return this.bookedDateRepository
-    .createQueryBuilder("bookedDates")
-    .leftJoin("bookedDates.booking","booking")
-    .leftJoin("booking.space", "space")
-    .where("space.id = :spaceId", { spaceId })
-    .andWhere('CONCAT(date,\' \',start_time)::timestamp  >= :now', { now } )
-    .getMany()
+      .createQueryBuilder('bookedDates')
+      .leftJoin('bookedDates.booking', 'booking')
+      .leftJoin('booking.space', 'space')
+      .where('space.id = :spaceId', { spaceId })
+      .andWhere("CONCAT(date,' ',start_time)::timestamp  >= :now", { now })
+      .getMany();
   }
 
   findAll() {

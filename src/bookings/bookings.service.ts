@@ -107,29 +107,30 @@ export class BookingsService {
               .where('dates.date = :date', { date })
               .andWhere(
                 new Brackets((q) => {
-                  q.where(new Brackets((qb) => {
-                    qb.where('dates.start_time <= :end_time').andWhere(
-                      'dates.end_time >= :start_time',
-                    );
-                  }),
+                  q.where(
+                    new Brackets((qb) => {
+                      qb.where('dates.start_time <= :end_time').andWhere(
+                        'dates.end_time >= :start_time',
+                      );
+                    }),
                   ).orWhere(
-                `NOT((
+                    `NOT((
                   :start_time BETWEEN schedule.opening_time 
                   AND schedule.closing_time) 
                   AND (:end_time BETWEEN schedule.opening_time 
                 AND schedule.closing_time))`,
+                  );
+                }),
               )
-                })
-              )
-              
+
               .andWhere('booking.space_id = :spaceId')
               .setParameters({
                 start_time,
                 end_time,
-                spaceId
+                spaceId,
               })
               .getMany();
-            console.log(validateBookings)
+            console.log(validateBookings);
             resolve(validateBookings.length > 0);
           }),
       ),
