@@ -10,7 +10,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { ChatService } from './chat.service';
 
-@WebSocketGateway({ cors: true, namespace: '/chat' })
+@WebSocketGateway({ cors: true, namespace: 'chat' })
 export class ChatGateway
   implements OnGatewayInit, OnGatewayDisconnect, OnGatewayConnection
 {
@@ -33,8 +33,16 @@ export class ChatGateway
   }
 
   @SubscribeMessage('send_message')
-  handleMessage(client: Socket, text: string): void {
-    console.log('=======>');
+  async handleMessage(client: Socket, text: string): Promise<void> {
+    console.log('=======>', text);
     this.server.emit('receive_message', text);
+  }
+
+  @SubscribeMessage('join_conversation')
+  async joinRoom(){}
+
+  @SubscribeMessage('typing')
+  async typing() {
+    
   }
 }

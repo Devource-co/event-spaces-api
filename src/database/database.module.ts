@@ -12,6 +12,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         url: configService.get('databaseUrl'),
         logger: 'file',
         entities: ['build/**/*.entity.js'],
+        subscribers: ['build/**/*.subscriber.js'],
         migrations: ['build/src/db/migrations/*js'],
         autoLoadEntities: true,
         logging: true,

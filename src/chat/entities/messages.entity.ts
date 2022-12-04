@@ -5,33 +5,37 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  OneToMany,
+  ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Conversation } from './conversation.entity';
 
 @Entity()
-export class Messages extends BaseEntity {
+export class Message extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('uuid')
+  @Column({ type: 'uuid', nullable: false })
   conversation_id: string;
 
-  @OneToMany(() => Conversation, (conversation) => conversation.id)
+  @ManyToOne(() => Conversation, (conversation) => conversation.messages)
   @JoinColumn({ name: 'conversation_id', referencedColumnName: 'id' })
-  conversations: Conversation;
+  conversation: Conversation;
 
-  @Column('uuid')
+  @Column({ type: 'uuid', nullable: false })
   user_id: string;
 
-  @OneToMany(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.messages)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
-  @Column({ type: 'text', default: '' })
+  @Column({ type: 'text', default: '', nullable: false })
   message: string;
+
+  @OneToOne(() => Conversation, (conversation) => conversation.last_message)
+  last_conversation: Conversation;
 
   @Column()
   @CreateDateColumn()

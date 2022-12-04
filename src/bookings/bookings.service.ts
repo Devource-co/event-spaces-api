@@ -16,6 +16,7 @@ export class BookingsService {
   async create(createBookingDto: CreateBookingDto, userId: string) {
     const invalidPayload = await this.checkIfBookingDatesValid(
       createBookingDto.bookedDates,
+      createBookingDto.space_id,
     );
     if (invalidPayload) {
       throw new HttpException(
@@ -90,39 +91,45 @@ export class BookingsService {
     return this.bookingRepository.softDelete(id);
   }
 
-  private async checkIfBookingDatesValid(bookedDates) {
+  private async checkIfBookingDatesValid(bookedDates: any[], spaceId: string) {
     const results = await Promise.all(
       bookedDates.map(
         (dateBook) =>
           new Promise(async (resolve) => {
             const { date, start_time, end_time } = dateBook;
-            const validateBookings = await this.bookingRepository
+            const validateBookings: any = await this.bookingRepository
               .createQueryBuilder('booking')
-              .innerJoin('booking.dates', 'dates')
+              .innerJoinAndSelect('booking.dates', 'dates')
               .innerJoin('booking.space', 'space')
               .innerJoin('space.schedule', 'schedule', 'schedule.day = :day', {
                 day: new Date(date).getDay(),
               })
               .where('dates.date = :date', { date })
               .andWhere(
-                new Brackets((qb) => {
-                  qb.where('dates.start_time <= :end_time').andWhere(
-                    'dates.end_time >= :start_time',
-                  );
-                }),
-              )
-              .orWhere(
+                new Brackets((q) => {
+                  q.where(new Brackets((qb) => {
+                    qb.where('dates.start_time <= :end_time').andWhere(
+                      'dates.end_time >= :start_time',
+                    );
+                  }),
+                  ).orWhere(
                 `NOT((
-            :start_time BETWEEN schedule.opening_time 
-                AND schedule.closing_time) 
-            AND (:end_time BETWEEN schedule.opening_time 
+                  :start_time BETWEEN schedule.opening_time 
+                  AND schedule.closing_time) 
+                  AND (:end_time BETWEEN schedule.opening_time 
                 AND schedule.closing_time))`,
               )
+                })
+              )
+              
+              .andWhere('booking.space_id = :spaceId')
               .setParameters({
                 start_time,
                 end_time,
+                spaceId
               })
               .getMany();
+            console.log(validateBookings)
             resolve(validateBookings.length > 0);
           }),
       ),

@@ -125,10 +125,14 @@ export class SpaceService {
     options: IPaginationOptions,
     relations: string[] = [],
     userId: string,
+    status: SPACE_STATUS | 'all',
   ): Promise<Pagination<Space>> {
     return paginate<Space>(this.spacesRepository, options, {
       relations,
-      where: { owner_id: userId },
+      where: {
+        owner_id: userId,
+        ...(status !== 'all' && { status: status ?? SPACE_STATUS.ACTIVE }),
+      },
     });
   }
 
