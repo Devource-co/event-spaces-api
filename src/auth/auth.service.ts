@@ -81,6 +81,7 @@ export class AuthService {
         user,
       };
     } else {
+      console.log(userDetails);
       const usr = await this.usersService.createUser({
         email: userDetails.email,
         firstname: userDetails.name?.split(' ')?.[0] || '',
