@@ -9,7 +9,7 @@ export class week10C1669002462522 implements MigrationInterface {
     );
     await queryRunner.query(`ALTER TABLE "address" ADD "distance" integer`);
     await queryRunner.query(
-      `ALTER TABLE "space" ADD "document_with_weights" tsvector NOT NULL DEFAULT ''`,
+      `ALTER TABLE "space" ADD COLUMN IF NOT EXISTS "document_with_weights" tsvector NOT NULL DEFAULT ''`,
     );
     await queryRunner.query(
       `CREATE UNIQUE INDEX "IDX_e0098522faf604f4f29ba54bba" ON "activity" ("name") `,

@@ -151,6 +151,7 @@ export class SpaceService {
         schedule: true,
         faqs: true,
         owner: true,
+        type: true,
       },
       relationLoadStrategy: 'query',
     });
