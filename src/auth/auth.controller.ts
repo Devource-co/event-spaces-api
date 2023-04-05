@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  Patch,
   Post,
   Request,
   UseGuards,
@@ -12,6 +13,7 @@ import { AuthLoginDto } from './dto/auth-login.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { SocialLoginDto } from './dto/socials-login.dto';
+import { PasswordChangeDto } from './dto/password-update.dto';
 
 @Controller({
   version: '1',
@@ -50,6 +52,17 @@ export class AuthController {
       name: socialUser.name,
       type: 'google',
     });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('password-change')
+  @HttpCode(200)
+  async passwordChange(
+    @Request() req,
+    @Body() passwordChangeDto: PasswordChangeDto,
+  ) {
+    const userId = req?.user?.id;
+    return this.authService.updatePassword(passwordChangeDto, userId);
   }
 
   @UseGuards(JwtAuthGuard)

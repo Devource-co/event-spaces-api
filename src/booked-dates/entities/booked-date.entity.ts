@@ -31,7 +31,7 @@ export class BookedDate extends BaseEntity {
   @Column({ nullable: false })
   booking_id: string;
 
-  @ManyToOne(() => Booking)
+  @ManyToOne(() => Booking, (booking) => booking.dates)
   @JoinColumn({ name: 'booking_id' })
   booking: Booking;
 

@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 
@@ -32,15 +33,7 @@ export class UsersService {
 
   async update(user, updateDto) {
     if (updateDto.password) {
-      if (!(await user?.validatePassword(updateDto.password))) {
-        throw new HttpException(
-          {
-            status: HttpStatus.UNAUTHORIZED,
-            error: 'Wrong current password',
-          },
-          HttpStatus.UNAUTHORIZED,
-        );
-      }
+      delete updateDto.password;
     }
 
     await this.usersRepository.update(user.id, updateDto);
@@ -49,7 +42,6 @@ export class UsersService {
 
   async showById(id: string): Promise<User> {
     const user = await this.findById(id);
-
     delete user.password;
     return user;
   }
@@ -70,5 +62,10 @@ export class UsersService {
     return await this.usersRepository.findOneBy({
       email,
     });
+  }
+
+  async updatePassword(password: string, userId) {
+    const hashedPassword = await bcrypt.hash(password, 8);
+    return this.usersRepository.update(userId, { password: hashedPassword });
   }
 }
