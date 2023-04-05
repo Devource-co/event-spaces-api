@@ -20,6 +20,7 @@ import { Space } from '../../space/entities/space.entity';
 import { Message } from '../../chat/entities/messages.entity';
 import { Conversation } from '../../chat/entities/conversation.entity';
 import { Exclude } from 'class-transformer';
+import { PaymentMethod } from '../../payment-methods/entities/payment-method.entity';
 
 @Entity()
 @Index(['id', 'email'])
@@ -86,6 +87,11 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Space, (space) => space.owner, { cascade: true })
   space: Space[];
+
+  @OneToMany(() => PaymentMethod, (payment_method) => payment_method.owner, {
+    cascade: true,
+  })
+  paymentMethod: PaymentMethod[];
 
   @OneToMany(() => Message, (message) => message.user, { cascade: true })
   messages: Message[];

@@ -9,6 +9,7 @@ import { UsersService } from '../users/users.service';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { SocialLoginDto } from './dto/socials-login.dto';
 import { ConfigService } from '@nestjs/config';
+import { PasswordChangeDto } from './dto/password-update.dto';
 
 @Injectable()
 export class AuthService {
@@ -36,7 +37,6 @@ export class AuthService {
 
   async validateUser(authLoginDto: AuthLoginDto): Promise<User> {
     const { email, password } = authLoginDto;
-
     const user = await this.usersService.findByEmail(email);
     if (!(await user?.validatePassword(password))) {
       throw new HttpException(
@@ -181,5 +181,24 @@ export class AuthService {
     if (payload.userId) {
       return this.usersService.findById(payload.userId);
     }
+  }
+
+  public async updatePassword(
+    passwordChangeDto: PasswordChangeDto,
+    userId: string,
+  ) {
+    const { password, oldPassword } = passwordChangeDto;
+    const user = await this.usersService.findById(userId);
+    if (!(await user?.validatePassword(oldPassword))) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error: 'Wrong password current password',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    await this.usersService.updatePassword(password, userId);
+    return { updated: true };
   }
 }

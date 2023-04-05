@@ -25,6 +25,7 @@ import { CancellationPolicyModule } from './cancellation-policy/cancellation-pol
 import { FaqsModule } from './faqs/faqs.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { BookedDatesModule } from './booked-dates/booked-dates.module';
+import { PaymentMethodsModule } from './payment-methods/payment-methods.module';
 import { PaymentsModule } from './payments/payments.module';
 // import './database/database-polyfill';
 
@@ -57,6 +58,7 @@ import { PaymentsModule } from './payments/payments.module';
     FaqsModule,
     BookingsModule,
     BookedDatesModule,
+    PaymentMethodsModule,
     PaymentsModule,
   ],
   controllers: [AppController],
