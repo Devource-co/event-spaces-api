@@ -56,7 +56,9 @@ export class SpaceController {
       {
         page,
         limit,
-        route: 'api/v1/space',
+        route: `api/v1/space?status=${status}${
+          relations.length ? `relation=${relations.join(',')}` : ''
+        }`,
       },
       relations,
       status,
@@ -117,7 +119,9 @@ export class SpaceController {
       {
         page,
         limit,
-        route: 'api/v1/space',
+        route: `api/v1/space?status=${status}${
+          relations.length ? `relation=${relations.join(',')}` : ''
+        }`,
       },
       relations,
       userId,

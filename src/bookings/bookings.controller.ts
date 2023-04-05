@@ -9,6 +9,10 @@ import {
   UseGuards,
   HttpCode,
   Request,
+  Query,
+  ParseBoolPipe,
+  DefaultValuePipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { BookingsService } from './bookings.service';
@@ -31,11 +35,27 @@ export class BookingsController {
   }
 
   @Get()
-  findAll() {
-    return this.bookingsService.findAll();
+  @UseGuards(JwtAuthGuard)
+  findAll(
+    @Request() req,
+    @Query('host', new DefaultValuePipe(false), ParseBoolPipe)
+    host = false,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit = 10,
+  ) {
+    const userId = req.user?.id;
+    const paginationOptions = {
+      page,
+      limit,
+      route: `api/v1/booking?host=${host}`,
+    };
+    return host
+      ? this.bookingsService.findAllByHost(userId as string, paginationOptions)
+      : this.bookingsService.findAll(userId as string, paginationOptions);
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.bookingsService.findOne(id);
   }
@@ -52,6 +72,7 @@ export class BookingsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
     return this.bookingsService.remove(id);
   }

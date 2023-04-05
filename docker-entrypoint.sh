@@ -1,7 +1,7 @@
 #!/bin/sh
 
-yarn migration:run
+yarn migration:run --transaction each
 
-yarn seed:run
+yarn seed:run --transaction each
 
 yarn start

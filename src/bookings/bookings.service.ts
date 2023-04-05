@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import { Brackets, Not, Repository } from 'typeorm';
 import { BookedDatesService } from '../booked-dates/booked-dates.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
@@ -45,8 +46,24 @@ export class BookingsService {
     return booking;
   }
 
-  findAll() {
-    return this.bookingRepository.find({
+  findAll(userId: string, options: IPaginationOptions) {
+    return paginate<Booking>(this.bookingRepository, options, {
+      where: {
+        user_id: userId,
+      },
+      relations: {
+        dates: true,
+      },
+    });
+  }
+
+  findAllByHost(userId: string, options: IPaginationOptions) {
+    return paginate<Booking>(this.bookingRepository, options, {
+      where: {
+        space: {
+          owner_id: userId,
+        },
+      },
       relations: {
         dates: true,
       },
