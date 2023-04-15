@@ -75,8 +75,9 @@ export class AuthService {
       //   );
       // }
       delete user.password;
+      const jwtSigned = await this._signJwt(user.id);
       return {
-        access_token: await this._signJwt(user.id),
+        access_token: jwtSigned,
         register: false,
         user,
       };

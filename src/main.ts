@@ -21,6 +21,7 @@ async function bootstrap() {
     .setDescription('Provides Api to event spaces app')
     .setVersion('1.0')
     .addTag('events')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config, {
     deepScanRoutes: true,

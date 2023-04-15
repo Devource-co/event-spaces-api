@@ -3,19 +3,12 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
-  Query,
-  DefaultValuePipe,
-  ParseIntPipe,
   HttpCode,
-  ParseArrayPipe,
-  HttpStatus,
-  HttpException,
   UseGuards,
   Request,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ChatService } from './chat.service';
 import { CreateMessageDto } from './dto/create-message.dto';
@@ -30,6 +23,7 @@ export class ChatController {
   @Get()
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   getConverstions(@Request() req) {
     const userId = req.user.id;
     return this.chatService.getConversations(userId);
@@ -45,6 +39,7 @@ export class ChatController {
   @Post(':id')
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   createMessage(
     @Param('id') id: string,
     @Request() req,
