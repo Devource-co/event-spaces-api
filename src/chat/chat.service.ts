@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Message } from './entities/messages.entity';
 import { Repository } from 'typeorm';
 import { CreateMessageDto } from './dto/create-message.dto';
+import { paginateRaw } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class ChatService {
@@ -32,10 +33,36 @@ export class ChatService {
   }
 
   async findMessages(id: string) {
-    return this.messageRepository.find({
-      where: { conversation: { id } },
-      order: { createdAt: 'DESC' },
+    const qb = this.messageRepository
+      .createQueryBuilder('message')
+      .select([
+        "TO_CHAR(DATE(message.createdAt), 'yyyy-mm-dd') AS date",
+        'message.id as id',
+        'message.message as message',
+        'message.conversation_id as conversation_id',
+        'message.user_id as user_id',
+        'message.createdAt as "createdAt"',
+      ])
+      .where('conversation_id = :id', { id })
+      .orderBy('DATE(message.createdAt)', 'ASC');
+    const paginatedMessages = await paginateRaw<Message>(qb, {
+      limit: 90,
+      page: 1,
     });
+    const groups = {};
+    paginatedMessages?.items.forEach(function (item) {
+      const date = item.date;
+      if (date in groups) {
+        groups[date].push(item);
+      } else {
+        groups[date] = new Array(item);
+      }
+    });
+
+    return {
+      ...paginatedMessages,
+      items: groups,
+    };
   }
 
   async getConversations(userId: string) {

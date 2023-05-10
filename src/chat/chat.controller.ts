@@ -31,7 +31,6 @@ export class ChatController {
 
   @Get(':id')
   @HttpCode(200)
-  @UseGuards(JwtAuthGuard)
   getMessages(@Param('id') id: string) {
     return this.chatService.findMessages(id);
   }
