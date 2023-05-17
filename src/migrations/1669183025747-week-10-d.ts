@@ -4,7 +4,9 @@ export class week10D1669183025747 implements MigrationInterface {
   name = 'week10D1669183025747';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP INDEX "public"."document_weights_idx"`);
+    await queryRunner.query(
+      `DROP INDEX IF EXISTS "public"."document_weights_idx"`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

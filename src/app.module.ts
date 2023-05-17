@@ -27,6 +27,9 @@ import { BookingsModule } from './bookings/bookings.module';
 import { BookedDatesModule } from './booked-dates/booked-dates.module';
 import { PaymentMethodsModule } from './payment-methods/payment-methods.module';
 import { PaymentsModule } from './payments/payments.module';
+import { StaffModule } from './staff/staff.module';
+import { RolesModule } from './roles/roles.module';
+import { PermissionsModule } from './permissions/permissions.module';
 // import './database/database-polyfill';
 
 @Module({
@@ -60,6 +63,9 @@ import { PaymentsModule } from './payments/payments.module';
     BookedDatesModule,
     PaymentMethodsModule,
     PaymentsModule,
+    StaffModule,
+    RolesModule,
+    PermissionsModule,
   ],
   controllers: [AppController],
   providers: [],
