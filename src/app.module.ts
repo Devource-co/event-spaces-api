@@ -30,6 +30,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { StaffModule } from './staff/staff.module';
 import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
+import { ReviewsModule } from './reviews/reviews.module';
 // import './database/database-polyfill';
 
 @Module({
@@ -66,6 +67,7 @@ import { PermissionsModule } from './permissions/permissions.module';
     StaffModule,
     RolesModule,
     PermissionsModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [],

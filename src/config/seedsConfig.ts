@@ -7,6 +7,6 @@ export const connectionSource = new DataSource({
   url: config().databaseUrl,
   logging: true,
   synchronize: false,
-  entities: ['src/**/*.entity{.ts,.js}'],
-  migrations: ['src/seeds/*.ts'],
+  entities: ['build/**/*.entity.js'],
+  migrations: ['build/seeds/*.js'],
 } as unknown as DataSourceOptions);

@@ -10,6 +10,8 @@ import { AuthLoginDto } from './dto/auth-login.dto';
 import { SocialLoginDto } from './dto/socials-login.dto';
 import { ConfigService } from '@nestjs/config';
 import { PasswordChangeDto } from './dto/password-update.dto';
+import { StaffService } from '../staff/staff.service';
+import { Staff } from '../staff/entities/staff.entity';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +20,7 @@ export class AuthService {
     private jwtService: JwtService,
     private httpService: HttpService,
     private readonly configService: ConfigService,
+    private staffService: StaffService,
   ) {}
 
   private async _signJwt(id: string) {
@@ -35,9 +38,33 @@ export class AuthService {
     };
   }
 
+  async loginStaff(authLoginDto: AuthLoginDto) {
+    const user = await this.validateStaff(authLoginDto);
+    return {
+      access_token: await this._signJwt(user.id),
+      user,
+    };
+  }
+
   async validateUser(authLoginDto: AuthLoginDto): Promise<User> {
     const { email, password } = authLoginDto;
     const user = await this.usersService.findByEmail(email);
+    if (!(await user?.validatePassword(password))) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error: 'Please check your email or password and try again',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    delete user.password;
+    return user;
+  }
+
+  async validateStaff(authLoginDto: AuthLoginDto): Promise<Staff> {
+    const { email, password } = authLoginDto;
+    const user = await this.staffService.findByEmail(email);
     if (!(await user?.validatePassword(password))) {
       throw new HttpException(
         {
@@ -173,6 +200,20 @@ export class AuthService {
       );
     }
     return user;
+  }
+
+  async validateStaffToken({ userId: id }) {
+    const staff = await this.staffService.findOne(id);
+    if (!staff?.email) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error: 'not authorized',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    return staff;
   }
 
   public async getUserFromAuthenticationToken(token: string) {
