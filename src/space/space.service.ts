@@ -10,6 +10,7 @@ import {
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
 import { Space, SPACE_STATUS } from './entities/space.entity';
+import { UpdateStatusDto } from './dto/update-status.dto';
 
 interface SearchSpaceArgs {
   options: IPaginationOptions;
@@ -45,6 +46,19 @@ export class SpaceService {
   ): Promise<Pagination<Space>> {
     return paginate<Space>(this.spacesRepository, options, {
       relations,
+      select: [
+        'id',
+        'title',
+        'public_id',
+        'owner',
+        'thumbnail_url',
+        'avg_rating',
+        'price',
+        'status',
+        'publish',
+        'minimumDuration',
+        'createdAt',
+      ],
       where: {
         ...(status !== 'all' && { status: status ?? SPACE_STATUS.ACTIVE }),
       },
@@ -233,5 +247,12 @@ export class SpaceService {
 
   async remove(id: string) {
     return this.spacesRepository.softDelete(id);
+  }
+
+  async updateStatus({ id, status, publish }: UpdateStatusDto) {
+    return this.spacesRepository.update(id, {
+      publish,
+      status,
+    });
   }
 }

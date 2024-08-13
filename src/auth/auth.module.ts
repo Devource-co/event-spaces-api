@@ -7,6 +7,8 @@ import { JwtStrategy } from './jwt.strategy';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
+import { StaffModule } from '../staff/staff.module';
+import { JwtStaffStrategy } from './jwt-staff.strategy';
 
 @Module({
   imports: [
@@ -20,9 +22,10 @@ import { UsersModule } from '../users/users.module';
     }),
     HttpModule,
     forwardRef(() => UsersModule),
+    forwardRef(() => StaffModule),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, AuthModuleOptions],
+  providers: [AuthService, JwtStrategy, AuthModuleOptions, JwtStaffStrategy],
   exports: [AuthService, JwtModule],
 })
 export class AuthModule implements OnModuleInit {

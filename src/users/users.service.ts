@@ -68,4 +68,24 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(password, 8);
     return this.usersRepository.update(userId, { password: hashedPassword });
   }
+
+  async getUserWithSpaces(userId: string) {
+    return this.usersRepository.findOne({
+      where: { id: userId },
+      relations: {
+        space: {
+          reviews: {
+            review: true,
+            rating: true,
+            reviewer: { profile_pic: true, firstname: true, lastname: true },
+            space: { title: true, thumbnail_url: true },
+          },
+          price: true,
+          thumbnail_url: true,
+          address: { street: true, town: true },
+          title: true,
+        },
+      },
+    });
+  }
 }
