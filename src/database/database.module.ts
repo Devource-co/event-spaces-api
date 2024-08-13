@@ -7,21 +7,23 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get('databaseUrl'),
-        logger: 'file',
-        entities: ['build/**/*.entity.js'],
-        subscribers: ['build/**/*.subscriber.js'],
-        migrations: ['build/src/db/migrations/*js'],
-        autoLoadEntities: true,
-        logging: true,
-        cli: {
-          migrationsDir: 'src/db/migrations',
-        },
-        synchronize: false,
-        relationLoadStrategy: 'query',
-      }),
+      useFactory: (configService: ConfigService) => {
+        return {
+          type: 'postgres',
+          url: configService.get('databaseUrl'),
+          logger: 'file',
+          entities: ['build/**/*.entity.js'],
+          subscribers: ['build/**/*.subscriber.js'],
+          migrations: ['build/src/db/migrations/*js'],
+          autoLoadEntities: true,
+          logging: true,
+          cli: {
+            migrationsDir: 'src/db/migrations',
+          },
+          synchronize: false,
+          relationLoadStrategy: 'query',
+        };
+      },
     }),
   ],
 })

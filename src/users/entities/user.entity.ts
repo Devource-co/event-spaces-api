@@ -21,6 +21,7 @@ import { Message } from '../../chat/entities/messages.entity';
 import { Conversation } from '../../chat/entities/conversation.entity';
 import { Exclude } from 'class-transformer';
 import { PaymentMethod } from '../../payment-methods/entities/payment-method.entity';
+import { Review } from '../../reviews/entities/review.entity';
 
 @Entity()
 @Index(['id', 'email'])
@@ -95,6 +96,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Message, (message) => message.user, { cascade: true })
   messages: Message[];
+
+  @OneToMany(() => Review, (review) => review.space, { cascade: true })
+  reviews: Review[];
 
   @ManyToMany(() => Conversation, (conversation) => conversation.users)
   @JoinTable()

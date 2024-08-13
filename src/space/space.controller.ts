@@ -21,6 +21,8 @@ import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { SPACE_STATUS } from './entities/space.entity';
+import { JwtAuthStaffGuard } from '../auth/jwt-authStaff.guard';
+import { UpdateStatusDto } from './dto/update-status.dto';
 
 @Controller({
   version: '1',
@@ -50,13 +52,14 @@ export class SpaceController {
       new ParseArrayPipe({ items: String, separator: ',', optional: true }),
     )
     relations = [],
+    // @Query('order', new DefaultValuePipe("created")) order:
   ) {
     if (relations.length === 1 && !relations[0]) relations = [];
     return this.spaceService.findAll(
       {
         page,
         limit,
-        route: `api/v1/space?status=${status}${
+        route: `/space?status=${status}${
           relations.length ? `relation=${relations.join(',')}` : ''
         }`,
       },
@@ -110,7 +113,7 @@ export class SpaceController {
       new ParseArrayPipe({ items: String, separator: ',' }),
     )
     relations = [],
-    @Query('status', new DefaultValuePipe(SPACE_STATUS.ACTIVE))
+    @Query('status', new DefaultValuePipe('all'))
     status: SPACE_STATUS | 'all' = SPACE_STATUS.ACTIVE,
     @Request() req,
   ) {
@@ -119,7 +122,7 @@ export class SpaceController {
       {
         page,
         limit,
-        route: `api/v1/space?status=${status}${
+        route: `/space/owner?status=${status}&${
           relations.length ? `relation=${relations.join(',')}` : ''
         }`,
       },
@@ -129,9 +132,17 @@ export class SpaceController {
     );
   }
 
+  @Post('/update-status')
+  @HttpCode(200)
+  @UseGuards(JwtAuthStaffGuard)
+  updateStatus(@Body() updateStatusDto: UpdateStatusDto) {
+    return this.spaceService.updateStatus(updateStatusDto);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const space = await this.spaceService.findOne(id);
+    console.log(space);
     if (!space) {
       throw new HttpException(
         {
