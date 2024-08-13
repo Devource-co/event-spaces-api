@@ -42,23 +42,10 @@ export class UsersController {
     return user;
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.usersService.findAll();
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.usersService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.usersService.remove(+id);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get('space')
+  async getProfileWithSpace(@Request() req) {
+    const user = req.user;
+    return this.usersService.getUserWithSpaces(user.id);
+  }
 }

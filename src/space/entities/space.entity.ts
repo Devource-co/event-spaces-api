@@ -4,6 +4,8 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Generated,
+  Index,
   JoinColumn,
   JoinTable,
   ManyToMany,
@@ -25,9 +27,10 @@ import { SpaceSchedule } from '../../space-schedule/entities/space-schedule.enti
 import { CancellationPolicy } from '../../cancellation-policy/entities/cancellation-policy.entity';
 import { Faq } from '../../faqs/entities/faq.entity';
 import { Booking } from '../../bookings/entities/booking.entity';
+import { Review } from '../../reviews/entities/review.entity';
 
 export enum SPACE_STATUS {
-  REVIEW = 'in review',
+  REVIEW = 'review',
   DRAFT = 'draft',
   ACTIVE = 'active',
   REJECTED = 'rejected',
@@ -50,6 +53,11 @@ export class Space extends BaseEntity {
 
   @Column({ nullable: true })
   address_id?: string;
+
+  @Index()
+  @Column()
+  @Generated('increment')
+  public_id: number;
 
   @OneToOne(() => Address, { cascade: true })
   @JoinColumn({ name: 'address_id' })
@@ -115,7 +123,7 @@ export class Space extends BaseEntity {
   @Column({ nullable: true, type: 'boolean' })
   parking_close?: boolean;
 
-  @Column({ default: -1 })
+  @Column({ default: 0 })
   avg_rating?: number;
 
   @Column({ default: false })
@@ -146,6 +154,9 @@ export class Space extends BaseEntity {
 
   @OneToMany(() => SpaceRule, (rule) => rule.space, { cascade: true })
   rules?: SpaceRule[];
+
+  @OneToMany(() => Review, (review) => review.space, { cascade: true })
+  reviews?: Review[];
 
   @Column('tsvector', { select: false, default: '' })
   document_with_weights: any;

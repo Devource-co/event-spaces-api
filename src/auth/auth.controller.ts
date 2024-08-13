@@ -27,8 +27,17 @@ export class AuthController {
   async login(@Body() authLoginDto: AuthLoginDto, @Request() req) {
     const ip =
       req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
-    console.log(ip);
+
     return this.authService.login(authLoginDto);
+  }
+
+  @Post('login-staff')
+  @HttpCode(200)
+  async loginStaff(@Body() authLoginDto: AuthLoginDto, @Request() req) {
+    const ip =
+      req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
+
+    return this.authService.loginStaff(authLoginDto);
   }
 
   @Post('login-facebook')
