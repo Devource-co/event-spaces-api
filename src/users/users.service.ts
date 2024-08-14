@@ -75,15 +75,40 @@ export class UsersService {
       relations: {
         space: {
           reviews: {
+            reviewer: true,
+            space: true,
+          },
+          address: true,
+        },
+      },
+      select: {
+        id: true,
+        email: true,
+        phone: true,
+        createdAt: true,
+        updatedAt: true,
+        space: {
+          id: true,
+          title: true,
+          thumbnail_url: true,
+          price: true,
+          address: {
+            street: true,
+            town: true,
+          },
+          reviews: {
             review: true,
             rating: true,
-            reviewer: { profile_pic: true, firstname: true, lastname: true },
-            space: { title: true, thumbnail_url: true },
+            reviewer: {
+              profile_pic: true,
+              firstname: true,
+              lastname: true,
+            },
+            space: {
+              title: true,
+              thumbnail_url: true,
+            },
           },
-          price: true,
-          thumbnail_url: true,
-          address: { street: true, town: true },
-          title: true,
         },
       },
     });

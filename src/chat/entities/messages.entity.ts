@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { Conversation } from './conversation.entity';
@@ -22,20 +23,20 @@ export class Message extends BaseEntity {
 
   @ManyToOne(() => Conversation, (conversation) => conversation.messages)
   @JoinColumn({ name: 'conversation_id', referencedColumnName: 'id' })
-  conversation: Conversation;
+  conversation: Relation<Conversation>;
 
   @Column({ type: 'uuid', nullable: false })
   user_id: string;
 
   @ManyToOne(() => User, (user) => user.messages)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-  user: User;
+  user: Relation<User>;
 
   @Column({ type: 'text', default: '', nullable: false })
   message: string;
 
   @OneToOne(() => Conversation, (conversation) => conversation.last_message)
-  last_conversation: Conversation;
+  last_conversation: Relation<Conversation>;
 
   @Column()
   @CreateDateColumn()

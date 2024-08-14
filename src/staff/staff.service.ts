@@ -11,8 +11,12 @@ export class StaffService {
     @InjectRepository(Staff)
     private staffRepository: Repository<Staff>,
   ) {}
-  create(createStaffDto: CreateStaffDto) {
-    return 'This action adds a new staff';
+
+  async create(createStaffDto: CreateStaffDto) {
+    const staff = this.staffRepository.create(createStaffDto);
+    await this.staffRepository.save(staff);
+    delete staff.password;
+    return staff;
   }
 
   findAll() {
@@ -28,10 +32,10 @@ export class StaffService {
   }
 
   update(id: string, updateStaffDto: UpdateStaffDto) {
-    return `This action updates a #${id} staff`;
+    return this.staffRepository.update(id, updateStaffDto);
   }
 
   remove(id: string) {
-    return `This action removes a #${id} staff`;
+    return this.staffRepository.softDelete(id);
   }
 }
