@@ -7,6 +7,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { Booking } from '../../bookings/entities/booking.entity';
@@ -33,7 +34,7 @@ export class BookedDate extends BaseEntity {
 
   @ManyToOne(() => Booking, (booking) => booking.dates)
   @JoinColumn({ name: 'booking_id' })
-  booking: Booking;
+  booking: Relation<Booking>;
 
   @Column()
   @CreateDateColumn()

@@ -22,20 +22,23 @@ export class Staff extends BaseEntity {
   email: string;
 
   @Exclude()
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   password?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   firstname?: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   lastname?: string;
 
-  @Column({ nullable: true, unique: true })
+  @Column({ nullable: false, unique: true })
   phone?: string;
 
   @Column({ nullable: true })
   profile_pic?: string;
+
+  @Column({ default: false })
+  isPasswordUpdated: boolean;
 
   @ManyToMany(() => Role, (role) => role.staffs, { cascade: true })
   @JoinTable()
