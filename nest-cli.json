@@ -8,6 +8,7 @@
         "classValidatorShim": false,
         "introspectComments": true
       }
-    }]
+    }],
+    "builder": "swc"
   }
 }

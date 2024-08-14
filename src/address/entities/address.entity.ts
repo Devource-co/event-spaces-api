@@ -5,6 +5,7 @@ import {
   Index,
   OneToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { Point } from 'geojson';
@@ -39,7 +40,7 @@ export class Address {
   @OneToOne(() => Space, (space) => space.address, {
     onDelete: 'CASCADE',
   })
-  space?: Space;
+  space?: Relation<Space>;
 
   @Index({ spatial: true })
   @Column({

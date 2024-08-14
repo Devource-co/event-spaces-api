@@ -7,6 +7,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
@@ -58,7 +59,7 @@ export class PaymentMethod extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.paymentMethod)
   @JoinColumn({ name: 'owner_id' })
-  owner?: User;
+  owner?: Relation<User>;
 
   @Column()
   @CreateDateColumn()

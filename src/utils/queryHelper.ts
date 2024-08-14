@@ -7,7 +7,7 @@ export const updateQueryHelper = async <Entity, DTO, Condition>(
 ): Promise<Entity> => {
   return respository
     .createQueryBuilder()
-    .update(updateDTO)
+    .update(updateDTO as any)
     .where(where)
     .returning('*')
     .execute()

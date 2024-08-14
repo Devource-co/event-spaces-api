@@ -15,7 +15,7 @@ import { UpdateStaffDto } from './dto/update-staff.dto';
 import { JwtAuthStaffGuard } from '../auth/jwt-authStaff.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
-@Controller('staff')
+@Controller({ path: 'staff', version: '1' })
 export class StaffController {
   constructor(private readonly staffService: StaffService) {}
 
