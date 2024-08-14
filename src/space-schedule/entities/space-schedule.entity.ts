@@ -7,6 +7,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { Space } from '../../space/entities/space.entity';
@@ -25,7 +26,7 @@ export class SpaceSchedule extends BaseEntity {
 
   @ManyToOne(() => Space, (space) => space.schedule)
   @JoinColumn({ name: 'space_id' })
-  space: Space;
+  space: Relation<Space>;
 
   @Column({ nullable: false, type: 'boolean', default: false })
   is_set_time: boolean;

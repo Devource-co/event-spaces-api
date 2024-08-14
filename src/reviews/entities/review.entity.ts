@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { Space } from '../../space/entities/space.entity';
@@ -27,14 +28,14 @@ export class Review extends BaseEntity {
 
   @ManyToOne(() => Space, (space) => space.reviews, { cascade: false })
   @JoinColumn({ name: 'space_id' })
-  space?: Space;
+  space?: Relation<Space>;
 
   @Column()
   user_id: string;
 
   @ManyToOne(() => User, (user) => user.reviews, { cascade: false })
   @JoinColumn({ name: 'user_id' })
-  reviewer?: User;
+  reviewer?: Relation<User>;
 
   @Column()
   @CreateDateColumn()

@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { Space } from '../../space/entities/space.entity';
@@ -26,7 +27,7 @@ export class SpaceRule extends BaseEntity {
 
   @ManyToOne(() => Space, (space) => space.rules)
   @JoinColumn({ name: 'space_id' })
-  space: Space;
+  space: Relation<Space>;
 
   @Column()
   @CreateDateColumn()

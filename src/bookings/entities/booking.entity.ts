@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { BookedDate } from '../../booked-dates/entities/booked-date.entity';
@@ -39,14 +40,14 @@ export class Booking extends BaseEntity {
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-  user: User;
+  user: Relation<User>;
 
   @Column('uuid')
   space_id: string;
 
   @ManyToOne(() => Space, (space) => space.bookings, { cascade: false })
   @JoinColumn({ name: 'space_id', referencedColumnName: 'id' })
-  space: Space;
+  space: Relation<Space>;
 
   @Column({ type: 'decimal' })
   total?: number;

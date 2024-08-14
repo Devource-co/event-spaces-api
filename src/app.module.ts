@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { DatabaseModule } from './database/database.module';
@@ -31,6 +31,7 @@ import { StaffModule } from './staff/staff.module';
 import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 // import './database/database-polyfill';
 
 @Module({

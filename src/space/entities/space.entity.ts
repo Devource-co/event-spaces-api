@@ -13,6 +13,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { Activity } from '../../activities/entities/activities.entity';
@@ -82,7 +83,7 @@ export class Space extends BaseEntity {
 
   @ManyToOne(() => User, (user) => user.space)
   @JoinColumn({ name: 'owner_id' })
-  owner?: User;
+  owner?: Relation<User>;
 
   @Column({ nullable: true })
   type_id?: string;
