@@ -33,7 +33,7 @@ export class FilesService {
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: 'Kindly try again later',
+          error: `Kindly try again later, ${error.message}`,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );

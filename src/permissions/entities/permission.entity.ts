@@ -3,11 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
+  // ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from '../../roles/entities/role.entity';
+// import { Role } from '../../roles/entities/role.entity';
 
 @Entity()
 export class Permission extends BaseEntity {

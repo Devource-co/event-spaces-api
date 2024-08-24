@@ -25,6 +25,7 @@ export class AuthController {
   @Post('login')
   @HttpCode(200)
   async login(@Body() authLoginDto: AuthLoginDto, @Request() req) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const ip =
       req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
 
@@ -34,6 +35,7 @@ export class AuthController {
   @Post('login-staff')
   @HttpCode(200)
   async loginStaff(@Body() authLoginDto: AuthLoginDto, @Request() req) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const ip =
       req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
 

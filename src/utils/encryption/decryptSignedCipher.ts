@@ -36,6 +36,7 @@ const decryptSignedCipher = (
   const cipherText = cipher.toString('base64');
   try {
     return decrypt(cipherText, iv, ikm, info);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return null;
   }

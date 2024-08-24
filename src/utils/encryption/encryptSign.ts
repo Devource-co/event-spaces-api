@@ -21,6 +21,7 @@ const encryptSign = (ikm, info, authenticationTag, plainText) => {
       macBuffer,
       cipherTextBuffer,
     ]).toString('base64');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return null;
   }

@@ -28,6 +28,7 @@ const encrypt = (plainText, ivParam, ikm, info) => {
     let encrypted = cipher.update(plainText, 'utf8', 'base64');
     encrypted += cipher.final('base64');
     return encrypted;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     const customerMessage = 'Unable to encrypt';
     throw new Error(customerMessage);

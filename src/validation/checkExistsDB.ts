@@ -3,12 +3,12 @@ import {
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  ValidationArguments,
+  // ValidationArguments,
 } from 'class-validator';
 
 @ValidatorConstraint({ async: true })
 export class IsNotExistConstraint implements ValidatorConstraintInterface {
-  validate(userName: any, args: ValidationArguments) {
+  validate() {
     // return UserRepository.findOneByName(userName).then((user) => {
     //   if (user) return false;
     return true;
