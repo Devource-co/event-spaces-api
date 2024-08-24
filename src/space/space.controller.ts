@@ -142,7 +142,7 @@ export class SpaceController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const space = await this.spaceService.findOne(id);
-    console.log(space);
+
     if (!space) {
       throw new HttpException(
         {
