@@ -20,7 +20,8 @@ const decrypt = (cipherText, ivParam, ikm, info) => {
     );
     const decrypted = decipher.update(cipherText, 'base64');
     return Buffer.concat([decrypted, decipher.final()]);
-  } catch (e) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_e) {
     return null;
   }
 };

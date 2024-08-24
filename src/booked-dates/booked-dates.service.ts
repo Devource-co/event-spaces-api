@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import dayjs = require('dayjs');
@@ -45,6 +46,7 @@ export class BookedDatesService {
     return this.bookedDateRepository.findOneBy({ id });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async update(id: string, updateBookedDateDto: UpdateBookedDateDto) {
     return `This action updates a #${id} bookedDate`;
   }

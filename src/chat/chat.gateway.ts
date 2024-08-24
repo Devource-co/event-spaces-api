@@ -24,17 +24,16 @@ export class ChatGateway
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
-  handleConnection(client: any, ...args: any[]) {
+  handleConnection(client: any) {
     this.logger.log(`Client connected: ${client.id}`);
   }
 
-  afterInit(server: any) {
+  afterInit() {
     this.logger.log(`Chat app initialized`);
   }
 
   @SubscribeMessage('send_message')
   async handleMessage(client: Socket, text: string): Promise<void> {
-    console.log('=======>', text);
     this.server.emit('receive_message', text);
   }
 

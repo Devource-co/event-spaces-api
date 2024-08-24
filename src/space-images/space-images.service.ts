@@ -17,7 +17,7 @@ export class SpaceImagesService {
     return image;
   }
 
-  findAll(spaceId?: string) {
+  findAll() {
     return this.spaceImagesRepository.find();
   }
 
