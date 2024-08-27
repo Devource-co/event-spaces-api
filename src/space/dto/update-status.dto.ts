@@ -3,7 +3,9 @@ import { SPACE_STATUS } from '../entities/space.entity';
 import { IsBoolean, IsIn, IsOptional, IsString } from 'class-validator';
 
 export class UpdateStatusDto {
-  @ApiProperty()
+  @ApiProperty({
+    enum: SPACE_STATUS,
+  })
   @IsIn(['in review', 'draft', 'active', 'rejected', 'inactive'])
   status: SPACE_STATUS;
 

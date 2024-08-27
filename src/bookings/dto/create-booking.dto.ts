@@ -29,7 +29,9 @@ export class CreateBookingDto {
   @IsInt()
   duration: number;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: PAYMENT_STATUS,
+  })
   @IsNotEmpty()
   @IsIn(['paid', 'pending', 'failed', 'cancelled'])
   payment_status?: PAYMENT_STATUS;
@@ -39,7 +41,9 @@ export class CreateBookingDto {
   @IsUUID()
   payment_id?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: BOOKING_STATUS,
+  })
   @IsNotEmpty()
   @IsIn(['pending', 'payment_waiting', 'booked', 'rejected', 'cancelled'])
   booking_status?: BOOKING_STATUS;

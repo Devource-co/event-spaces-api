@@ -9,7 +9,9 @@ import {
 import { BLOG_TYPE } from '../entities/blog.entity';
 
 export class CreateBlogDto {
-  @ApiProperty()
+  @ApiProperty({
+    enum: BLOG_TYPE,
+  })
   @IsNotEmpty()
   @IsIn(['blog', 'support', 'guide'])
   type: BLOG_TYPE;

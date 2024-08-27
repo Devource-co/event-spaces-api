@@ -92,7 +92,7 @@ jobs:
             echo "Running new image..."
             docker run -d \
             --expose=3090 \
-            -p 3091:3090 \
+            -p 3090:3090 \
             --restart=always \
             --name api-staging \
             --env-file .env \
@@ -100,4 +100,3 @@ jobs:
             $DOCKER_USER/findy-api-staging:$GITHUB_SHA
             docker image prune -f
            
-         

@@ -3,7 +3,9 @@ import { IsIn, IsNotEmpty, ValidateIf } from 'class-validator';
 import { CARD_TYPE, PAYMENT_TYPE } from '../entities/payment-method.entity';
 
 export class CreatePaymentMethodDto {
-  @ApiProperty()
+  @ApiProperty({
+    enum: PAYMENT_TYPE,
+  })
   @IsNotEmpty()
   @IsIn(['card', 'mpesa'])
   payment_type: PAYMENT_TYPE;
@@ -23,7 +25,9 @@ export class CreatePaymentMethodDto {
   @IsNotEmpty()
   expiration?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: CARD_TYPE,
+  })
   @ValidateIf((o) => o.payment_type === 'card')
   @IsNotEmpty()
   @IsIn(['amex', 'visa', 'discover', 'mastercard'])
