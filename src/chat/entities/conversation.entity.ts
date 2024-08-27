@@ -8,6 +8,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  Relation,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
@@ -25,17 +26,17 @@ export class Conversation extends BaseEntity {
   description?: string;
 
   @ManyToMany(() => User, (user) => user.conversations)
-  users: User[];
+  users: Relation<User>[];
 
   @OneToMany(() => Message, (message) => message.conversation)
-  messages: Message[];
+  messages: Relation<Message>[];
 
   @Column({ type: 'uuid', nullable: true })
   last_message_id: string;
 
   @OneToOne(() => Message, (message) => message.last_conversation)
   @JoinColumn({ name: 'last_message_id', referencedColumnName: 'id' })
-  last_message: Message;
+  last_message: Relation<Message>;
 
   @Column()
   @CreateDateColumn()
