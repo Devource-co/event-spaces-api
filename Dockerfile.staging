@@ -3,10 +3,6 @@ FROM node:16
 WORKDIR /usr/api
 COPY package.json yarn.lock ./
 
-RUN yarn global add rimraf
-
-RUN rimraf ./build
-
 RUN yarn install --frozen-lockfile
 
 
