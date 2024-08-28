@@ -76,7 +76,7 @@ jobs:
           source: '.env,.configenv'
           target: '~/findyspace/staging/api/'
       - name: Deploy the Api
-        uses: appleboy/ssh-action@v0.1.2
+        uses: appleboy/ssh-action@master
         with:
           host: $SSH_HOST
           key: $SSH_KEY
