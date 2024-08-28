@@ -1,16 +1,22 @@
-FROM node:16
+FROM node:20
 
-WORKDIR /usr/src/app
+WORKDIR /usr/api
 COPY package.json yarn.lock ./
 
-RUN yarn global add rimraf
+RUN yarn install --frozen-lockfile
 
-RUN rimraf ./dist
-
-RUN yarn install
 
 COPY . .
 
-EXPOSE 3090
-CMD ["yarn", "start:dev"]
+RUN yarn lint
 
+RUN yarn build
+
+
+EXPOSE 3090
+
+COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
