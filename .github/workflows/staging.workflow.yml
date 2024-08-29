@@ -91,8 +91,8 @@ jobs:
             docker rm api-staging
             echo "Running new image..."
             docker run -d \
-            --expose=3090 \
-            -p 3090:3090 \
+            --expose=8190 \
+            -p 8190:8190 \
             --restart=always \
             --name api-staging \
             --env-file .env \
