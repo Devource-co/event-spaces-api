@@ -1,9 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsEmail,
   IsNotEmpty,
   IsPhoneNumber,
-  IsStrongPassword,
+  IsUUID,
+  MinLength,
 } from 'class-validator';
 
 export class CreateStaffDto {
@@ -14,28 +16,29 @@ export class CreateStaffDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsStrongPassword(
-    {
-      minLength: 8,
-      minLowercase: 1,
-      minUppercase: 1,
-      minNumbers: 1,
-      minSymbols: 1,
-    },
-    { message: 'Invalid password' },
-  )
-  password: string;
+  @MinLength(8, {
+    message: 'password should have at least 8 characters',
+  })
+  password?: string;
 
   @ApiProperty()
   @IsNotEmpty()
-  firstname: string;
+  firstname?: string;
 
   @ApiProperty()
   @IsNotEmpty()
-  lastname: string;
+  lastname?: string;
 
   @ApiProperty()
-  @IsNotEmpty()
   @IsPhoneNumber()
-  phone: string;
+  @IsNotEmpty()
+  phone?: string;
+
+  @ApiProperty()
+  profile_pic?: string;
+
+  @ApiProperty()
+  @IsUUID()
+  @IsNotEmpty()
+  role_id: string;
 }
