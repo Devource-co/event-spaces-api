@@ -14,14 +14,20 @@ export class Permission extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ nullable: true })
-  name?: string;
+  @Column({ nullable: false })
+  name: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'boolean' })
   read: boolean;
 
-  // @ManyToMany(() => Role, (staff) => staff.roles)
-  // roles: Role[];
+  @Column({ nullable: true, type: 'boolean' })
+  write: boolean;
+
+  @Column({ nullable: true, type: 'boolean' })
+  delete: boolean;
+
+  @ManyToMany(() => Role, (role) => role.permissions)
+  roles: Role[];
 
   @Column()
   @CreateDateColumn()

@@ -19,6 +19,6 @@ export class seedingsPolicies1666533627409 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DELETE * FROM cancellation_policy`);
+    // await queryRunner.query(`DELETE * FROM cancellation_policy`);
   }
 }

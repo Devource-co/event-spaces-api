@@ -17,23 +17,30 @@ import { Staff } from '../staff/entities/staff.entity';
 export class AuthService {
   constructor(
     private usersService: UsersService,
+    private staffService: StaffService,
     private jwtService: JwtService,
     private httpService: HttpService,
     private readonly configService: ConfigService,
     private staffService: StaffService,
   ) {}
 
-  private async _signJwt(id: string) {
+  private async _signJwt(id: string, isAdmin?: boolean) {
     const payload = {
       userId: id,
+      isAdmin: !!isAdmin,
     };
     return this.jwtService.sign(payload);
   }
 
-  async login(authLoginDto: AuthLoginDto) {
-    const user = await this.validateUser(authLoginDto);
+  async login(authLoginDto: AuthLoginDto, isAdmin?: boolean) {
+    let user;
+    if (isAdmin) {
+      user = await this.validateStaff(authLoginDto);
+    } else {
+      user = await this.validateUser(authLoginDto);
+    }
     return {
-      access_token: await this._signJwt(user.id),
+      access_token: await this._signJwt(user.id, isAdmin),
       user,
     };
   }

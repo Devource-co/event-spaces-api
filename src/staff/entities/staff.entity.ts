@@ -5,8 +5,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -40,9 +40,9 @@ export class Staff extends BaseEntity {
   @Column({ default: false })
   isPasswordUpdated: boolean;
 
-  @ManyToMany(() => Role, (role) => role.staffs, { cascade: true })
-  @JoinTable()
-  roles: Role[];
+  @ManyToOne(() => Role, (role) => role.staffs, { cascade: true })
+  @JoinColumn({ name: 'role_id', referencedColumnName: 'id' })
+  role: Role;
 
   @Column()
   @CreateDateColumn()

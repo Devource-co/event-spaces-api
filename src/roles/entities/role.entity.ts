@@ -3,11 +3,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Staff } from '../../staff/entities/staff.entity';
+import { Permission } from '../../permissions/entities/permission.entity';
 
 @Entity()
 export class Role extends BaseEntity {
@@ -17,8 +20,12 @@ export class Role extends BaseEntity {
   @Column({ nullable: true })
   name?: string;
 
-  @ManyToMany(() => Staff, (staff) => staff.roles)
+  @OneToMany(() => Staff, (staff) => staff.role)
   staffs: Staff[];
+
+  @ManyToMany(() => Permission, (permission) => permission.roles)
+  @JoinTable()
+  permissions: Permission[];
 
   @Column()
   @CreateDateColumn()
