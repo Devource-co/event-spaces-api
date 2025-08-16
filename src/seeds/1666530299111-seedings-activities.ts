@@ -13,7 +13,7 @@ export class seedingsActivities1666524291111 implements MigrationInterface {
           .insert()
           .into(CategoryActivity)
           .values({ name, description })
-          .orUpdate({ conflict_target: ['name'], overwrite: ['description'] })
+          .orUpdate(['name'], ['description'])
           .returning('id')
           .execute();
         const categoryId = cate.raw[0].id;
@@ -33,7 +33,7 @@ export class seedingsActivities1666524291111 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // await queryRunner.query(`DELETE * FROM activity`);
-    // await queryRunner.query(`DELETE * FROM category_activity`);
+    await queryRunner.query(`DELETE * FROM activity`);
+    await queryRunner.query(`DELETE * FROM category_activity`);
   }
 }

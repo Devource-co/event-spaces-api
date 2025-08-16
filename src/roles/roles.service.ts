@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -16,7 +15,7 @@ export class RolesService {
 
   create({ name, permissions }: CreateRoleDto) {
     const role = this.roleRepository.create({ name });
-    role.permissions = permissions.map((id) => ({ id } as Permission));
+    role.permissions = permissions.map((id) => ({ id }) as Permission);
     return this.roleRepository.save(role);
   }
 
@@ -36,7 +35,7 @@ export class RolesService {
 
   update(id: string, { name, permissions }: UpdateRoleDto) {
     const role = this.roleRepository.create({ name });
-    role.permissions = permissions.map((id) => ({ id } as Permission));
+    role.permissions = permissions.map((id) => ({ id }) as Permission);
     role.id = id;
     return this.roleRepository.save(role);
   }

@@ -21,7 +21,6 @@ export class AuthService {
     private jwtService: JwtService,
     private httpService: HttpService,
     private readonly configService: ConfigService,
-    private staffService: StaffService,
   ) {}
 
   private async _signJwt(id: string, isAdmin?: boolean) {
