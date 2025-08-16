@@ -49,7 +49,17 @@ export class AuthService {
   async validateUser(authLoginDto: AuthLoginDto): Promise<User> {
     const { email, password } = authLoginDto;
     const user = await this.usersService.findByEmail(email);
-    if (!(await user?.validatePassword(password))) {
+
+    if (user.hasPassword && !(await user?.validatePassword(password))) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          error: 'Please check your email or password and try again',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    if (!user.password) {
       throw new HttpException(
         {
           status: HttpStatus.UNAUTHORIZED,
@@ -109,7 +119,6 @@ export class AuthService {
         user,
       };
     } else {
-      console.log(userDetails);
       const usr = await this.usersService.createUser({
         email: userDetails.email,
         firstname: userDetails.name?.split(' ')?.[0] || '',

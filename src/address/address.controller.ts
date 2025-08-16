@@ -9,11 +9,14 @@ import {
   Query,
   UsePipes,
   ValidationPipe,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { AddressService } from './address.service';
 import { AddressRangeQueryDTO } from './dto/address-query';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
+import { isUUID } from 'class-validator';
 
 @Controller({
   version: '1',
@@ -46,6 +49,16 @@ export class AddressController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAddressDto: UpdateAddressDto) {
+    if (!isUUID(id)) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Invalid UUID',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     return this.addressService.update(id, updateAddressDto);
   }
 

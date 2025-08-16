@@ -12,6 +12,8 @@ export enum BLOG_TYPE {
   BLOG = 'blog',
   SUPPORT = 'support',
   GUIDE = 'guide',
+  NEWS = 'news',
+  OTHERS = 'others',
 }
 
 @Entity()

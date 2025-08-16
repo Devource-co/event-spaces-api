@@ -16,6 +16,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
   const configService = app.get<ConfigService>(ConfigService);
   app.use(validateHeaders);
+
   const config = new DocumentBuilder()
     .setTitle('Event space')
     .setDescription('Provides Api to event spaces app')
@@ -23,6 +24,7 @@ async function bootstrap() {
     .addTag('events')
     .addBearerAuth()
     .build();
+
   const document = SwaggerModule.createDocument(app, config, {
     deepScanRoutes: true,
   });

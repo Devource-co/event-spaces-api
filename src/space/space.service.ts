@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -11,6 +11,8 @@ import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
 import { Space, SPACE_STATUS } from './entities/space.entity';
 import { UpdateStatusDto } from './dto/update-status.dto';
+import { AddressService } from '../address/address.service';
+import { CreateAddressDto } from '../address/dto/create-address.dto';
 
 interface SearchSpaceArgs {
   options: IPaginationOptions;
@@ -27,6 +29,8 @@ export class SpaceService {
   constructor(
     @InjectRepository(Space)
     private spacesRepository: Repository<Space>,
+    @Inject(AddressService)
+    private addressService: AddressService,
   ) {}
   async create(createSpaceDto: CreateSpaceDto, userId: string) {
     const space = this.spacesRepository.create({
@@ -254,5 +258,15 @@ export class SpaceService {
       publish,
       status,
     });
+  }
+
+  async createSpaceAdress(address: CreateAddressDto, userId: string) {
+    const addressEntity = await this.addressService.create(address);
+    const space = this.spacesRepository.create({
+      address_id: addressEntity.id,
+      owner_id: userId,
+    });
+    await space.save();
+    return space;
   }
 }

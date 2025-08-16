@@ -11,6 +11,7 @@ import {
 import { SpaceImagesService } from './space-images.service';
 import { CreateSpaceImageDto } from './dto/create-space-image.dto';
 import { UpdateSpaceImageDto } from './dto/update-space-image.dto';
+import PresignedDTO from './dto/presigned-image.dto';
 
 @Controller({
   version: '1',
@@ -27,6 +28,11 @@ export class SpaceImagesController {
   @Get()
   findAll(@Query('space-id') spaceId = '') {
     return this.spaceImagesService.findAll(spaceId);
+  }
+
+  @Post('/presigned')
+  generatePresignedUrl(@Body() presignedDTO: PresignedDTO) {
+    return this.spaceImagesService.generatePresigned(presignedDTO);
   }
 
   @Get(':id')

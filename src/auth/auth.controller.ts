@@ -28,7 +28,6 @@ export class AuthController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const ip =
       req.headers['x-forwarded-for'] || req.socket.remoteAddress || null;
-
     return this.authService.login(authLoginDto);
   }
 

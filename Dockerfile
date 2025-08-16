@@ -13,7 +13,7 @@ RUN yarn lint
 RUN yarn build
 
 
-EXPOSE 3090
+EXPOSE 8190
 
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh
 

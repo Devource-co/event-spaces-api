@@ -8,6 +8,7 @@ import { AddressModule } from '../address/address.module';
 import { ActivitiesModule } from '../activities/activities.module';
 import { SpaceType } from '../spacetypes/entities/spacetype.entity';
 import { SpacetypesModule } from '../spacetypes/spacetypes.module';
+import { AddressService } from '../address/address.service';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { SpacetypesModule } from '../spacetypes/spacetypes.module';
     SpacetypesModule,
   ],
   controllers: [SpaceController],
-  providers: [SpaceService],
+  providers: [SpaceService, AddressService],
   exports: [SpaceService],
 })
 export class SpaceModule {}

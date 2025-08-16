@@ -23,6 +23,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { SPACE_STATUS } from './entities/space.entity';
 import { JwtAuthStaffGuard } from '../auth/jwt-authStaff.guard';
 import { UpdateStatusDto } from './dto/update-status.dto';
+import { CreateAddressDto } from '../address/dto/create-address.dto';
 
 @Controller({
   version: '1',
@@ -169,5 +170,16 @@ export class SpaceController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.spaceService.remove(id);
+  }
+
+  @Post('space-address')
+  @HttpCode(201)
+  @UseGuards(JwtAuthGuard)
+  createSpaceAddress(
+    @Body() createSpaceAddressDto: CreateAddressDto,
+    @Request() req,
+  ) {
+    const userId = req.user?.id;
+    return this.spaceService.createSpaceAdress(createSpaceAddressDto, userId);
   }
 }

@@ -13,7 +13,7 @@ export class CreateBlogDto {
     enum: BLOG_TYPE,
   })
   @IsNotEmpty()
-  @IsIn(['blog', 'support', 'guide'])
+  @IsIn(['blog', 'support', 'guide', 'news', 'others'])
   type: BLOG_TYPE;
 
   @ApiProperty()
