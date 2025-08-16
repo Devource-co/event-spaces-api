@@ -159,18 +159,18 @@ export class SpaceService {
       where: {
         id,
       },
-      relations: {
-        images: true,
-        address: true,
-        activities: true,
-        amenities: true,
-        accessMethods: true,
-        rules: true,
-        schedule: true,
-        faqs: true,
-        owner: true,
-        type: true,
-      },
+      relations: [
+        'images',
+        'address',
+        'activities',
+        'amenities',
+        'accessMethods',
+        'rules',
+        'schedule',
+        'faqs',
+        'owner',
+        'type',
+      ],
       relationLoadStrategy: 'query',
     });
   }
@@ -180,9 +180,7 @@ export class SpaceService {
       where: {
         id,
       },
-      relations: {
-        images: true,
-      },
+      relations: ['images'],
     });
     if (space.owner_id !== userId) {
       throw new HttpException(
@@ -236,16 +234,16 @@ export class SpaceService {
       where: {
         id,
       },
-      relations: {
-        images: true,
-        address: true,
-        activities: true,
-        amenities: true,
-        accessMethods: true,
-        rules: true,
-        schedule: true,
-        faqs: true,
-      },
+      relations: [
+        'images',
+        'address',
+        'activities',
+        'amenities',
+        'accessMethods',
+        'rules',
+        'schedule',
+        'faqs',
+      ],
     });
   }
 

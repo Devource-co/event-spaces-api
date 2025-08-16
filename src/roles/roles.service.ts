@@ -21,7 +21,7 @@ export class RolesService {
 
   findAll() {
     return this.roleRepository.find({
-      relations: { permissions: true },
+      relations: ['permissions'],
       relationLoadStrategy: 'query',
     });
   }
@@ -29,7 +29,7 @@ export class RolesService {
   findOne(id: string) {
     return this.roleRepository.findOne({
       where: { id },
-      relations: { permissions: true, staffs: true },
+      relations: ['permissions', 'staffs'],
     });
   }
 

@@ -72,15 +72,13 @@ export class UsersService {
   async getUserWithSpaces(userId: string) {
     return this.usersRepository.findOne({
       where: { id: userId },
-      relations: {
-        space: {
-          reviews: {
-            reviewer: true,
-            space: true,
-          },
-          address: true,
-        },
-      },
+      relations: [
+        'space',
+        'space.reviews',
+        'space.reviews.reviewer',
+        'space.reviews.space',
+        'space.address',
+      ],
       select: {
         id: true,
         email: true,

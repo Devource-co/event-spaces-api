@@ -68,7 +68,7 @@ export class ChatService {
 
   async getConversations(userId: string) {
     return this.conversationRepository.find({
-      relations: { users: true, last_message: true },
+      relations: ['users', 'last_message'],
       where: {
         users: {
           id: userId,

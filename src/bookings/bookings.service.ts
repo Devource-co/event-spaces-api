@@ -57,6 +57,15 @@ export class BookingsService {
     });
   }
 
+  findAllByUser(userId: string, options: IPaginationOptions) {
+    return paginate<Booking>(this.bookingRepository, options, {
+      where: {
+        user_id: userId,
+      },
+      relations: ['dates'],
+    });
+  }
+
   findAllByHost(userId: string, options: IPaginationOptions) {
     return paginate<Booking>(this.bookingRepository, options, {
       where: {
@@ -64,18 +73,14 @@ export class BookingsService {
           owner_id: userId,
         },
       },
-      relations: {
-        dates: true,
-      },
+      relations: ['dates'],
     });
   }
 
   findOne(id: string) {
     return this.bookingRepository.findOne({
       where: { id },
-      relations: {
-        dates: true,
-      },
+      relations: ['dates'],
     });
   }
 
@@ -84,9 +89,7 @@ export class BookingsService {
       where: {
         id,
       },
-      relations: {
-        dates: true,
-      },
+      relations: ['dates'],
     });
     if (booking.user_id !== userId) {
       throw new HttpException(

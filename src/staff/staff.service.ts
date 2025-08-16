@@ -20,7 +20,9 @@ export class StaffService {
   }
 
   findAll() {
-    return this.staffRepository.find({ relations: { roles: true } });
+    return this.staffRepository.find({ 
+      relations: ['roles'] 
+    });
   }
 
   findOne(id: string) {
