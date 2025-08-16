@@ -19,6 +19,6 @@ export class seedingsSpaceTypes1666533520579 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // await queryRunner.query(`DELETE * FROM space_type`);
+    await queryRunner.query(`DELETE * FROM space_type`);
   }
 }

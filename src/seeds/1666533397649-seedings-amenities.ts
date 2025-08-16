@@ -19,6 +19,6 @@ export class seedingsAmenities1666533397649 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // await queryRunner.query(`DELETE * FROM amenity`);
+    await queryRunner.query(`DELETE * FROM amenity`);
   }
 }

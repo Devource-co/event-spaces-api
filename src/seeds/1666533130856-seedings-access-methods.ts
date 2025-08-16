@@ -19,6 +19,6 @@ export class seedingsAccessMethods1666533130856 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // await queryRunner.query(`DELETE * FROM access_method`);
+    await queryRunner.query(`DELETE * FROM access_method`);
   }
 }
